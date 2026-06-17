@@ -1,5 +1,15 @@
-# JTAG Pinout Identification
-* * *
+---
+layout: single
+title: "JTAG Pinout Identification"
+date: 2024-02-04
+categories: [Debug Interfaces]
+tags: [jtag, jtagulator, embedded, hardware]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
 
 ## Introduction
 Hi everyone, our article's focus is the JTAG interface, a topic that may be unfamiliar to those not engaged in the embedded systems domain. Generally, the JTAG interface can be found in many embedded system devices across various industries, including Automotive, Aerospace, Railway, Medical Devices, IoT, and more. As our interest lies in security, exploring this interface becomes useful in conducting our research. This article will concentrate on discovering JTAG pins using a multi-meter and the Jtagulator board. Additionally, we will show you how to dump the contents of any memory on the device. Let's get into it.

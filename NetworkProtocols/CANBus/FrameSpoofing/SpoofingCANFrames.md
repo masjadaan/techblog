@@ -1,6 +1,15 @@
-# CAN frames Spoofing
-* * *
-
+---
+layout: single
+title: "CAN Frames Spoofing"
+date: 2023-12-02
+categories: [Network Protocols]
+tags: [can-bus, automotive, frame-spoofing, network]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
 
 ## Introduction
 Controller Area Network (CAN) is a communication protocol developed by Robert Bosch and standardized as ISO 11898-1 and ISO 11898-2. It is utilized in various industries, including automotive, railway, industrial automation, and many more. Despite its widespread usage and advantages, it raises certain security concerns. For instance, CAN frames are broadcasted to all nodes on the network. This means that a malicious component can passively sniff on all communications or actively send packets to any other node on the network.

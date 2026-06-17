@@ -1,5 +1,16 @@
-# Hijacking Shared Libraries
-* * *
+---
+layout: single
+title: "Hijacking Shared Libraries"
+date: 2024-06-27
+categories: [Linux]
+tags: [ld-preload, shared-libraries, privilege-escalation, linux]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+
 ## Introduction To Linux Shared Libraries
 
 You can think of shared libraries as a collection of functions and data designed to be used by multiple programs. They are typically identified by the `.so` (shared object) extension and are linked dynamically at runtime, which not only reduces the size of executables but also boosts system efficiency. However, it's important to note that any changes to a shared library can impact all the programs that rely on it.

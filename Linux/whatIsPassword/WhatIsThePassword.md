@@ -1,5 +1,15 @@
-# What is the password?
-* * *
+---
+layout: single
+title: "What is the password?"
+date: 2023-12-17
+categories: [Linux]
+tags: [passwd, shadow, hashing, authentication, linux]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
 
 ## Introduction
 

@@ -1,6 +1,15 @@
-# CBC Bit-Flipping Attack
-* * *
-
+---
+layout: single
+title: "CBC Bit-Flipping Attack"
+date: 2024-01-06
+categories: [Cryptography]
+tags: [cbc, block-cipher, bit-flipping, cryptography]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
 
 ## Introduction
 Hey everyone, in the previous article, we discussed the Oracle Padding Attack against Block Cipher algorithms, particularly when operating under Cipher Block Chaining (CBC) mode. In this article, we will delve into the CBC Bit-Flipping Attack. It's important to understand that exploiting vulnerabilities in cryptographic implementations could lead to outcomes like content decryption, privilege escalation, or even key recovery. Let's start with a brief introduction to Block Ciphers.

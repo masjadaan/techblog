@@ -1,5 +1,15 @@
-# Oracle Padding Attack
-* * *
+---
+layout: single
+title: "Oracle Padding Attack"
+date: 2024-01-06
+categories: [Cryptography]
+tags: [cbc, padding-oracle, pkcs7, cryptography]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
 
 ## Introduction
 The Oracle Padding Attack is a type of cryptographic attack targeting Block Cipher algorithms, especially when operating under Cipher Block Chaining (CBC) mode. In this context, the term 'oracle' refers to a system that discloses information about whether the padding of a cryptographic message is correct or not. While our goal is to provide a concise overview, we will refrain from delving too deeply into theory. Instead, we will present the essential concepts necessary for understanding how the attack works.

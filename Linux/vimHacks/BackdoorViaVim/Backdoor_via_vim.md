@@ -1,5 +1,15 @@
-# Backdoor Via Vim
-* * *
+---
+layout: single
+title: "Backdoor Via Vim"
+date: 2024-06-07
+categories: [Linux]
+tags: [vim, vimrc, backdoor, persistence, linux]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
 
 The VIM editor needs no introduction; it is a well-known and widely used command-line text editor that comes pre-installed on most Unix and Linux operating systems. In many Linux setups, user-specific VIM configuration settings are stored in the user's home directory within the `.vimrc` file. This file, which is automatically loaded when Vim starts, accepts VIM-specific scripting commands that are usually used to enable users to tailor their editing environment to their preferences.
 

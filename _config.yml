@@ -1,0 +1,59 @@
+title: "Tech Security Blog"
+subtitle: "Security Engineering Articles"
+name: "Mahmoud Jadaan"
+description: "Articles on Linux, Cryptography, Network Protocols, and Hardware security — all for educational purposes."
+url: "https://masjadaan.github.io"
+baseurl: "/techblog"
+repository: "masjadaan/techblog"
+
+remote_theme: mmistakes/minimal-mistakes@4.26.2
+minimal_mistakes_skin: "dark"
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-include-cache
+  - jekyll-feed
+  - jekyll-sitemap
+
+author:
+  name: "Mahmoud Jadaan"
+  bio: "Security Engineer"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/masjadaan"
+
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/masjadaan"
+
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: "highlight"
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "single"
+      author_profile: true
+      toc: true
+      toc_sticky: true
+      read_time: true
+      show_date: true
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+  - "*.sh"
+  - "*.c"
+  - "*.py"
+  - LICENSE
