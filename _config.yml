@@ -1,5 +1,5 @@
 title: "Tech Security Blog"
-subtitle: "Security Engineering Articles"
+subtitle: "Security Research Articles"
 name: "Mahmoud Jadaan"
 description: "Articles on Linux, Cryptography, Network Protocols, and Hardware security — all for educational purposes."
 url: "https://masjadaan.github.io"
@@ -17,7 +17,7 @@ plugins:
 
 author:
   name: "Mahmoud Jadaan"
-  bio: "Security Engineer"
+  bio: "Security Researcher"
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
