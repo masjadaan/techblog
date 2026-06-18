@@ -1,11 +1,11 @@
 main:
   - title: "Home"
-    url: /techblog/
+    url: /
   - title: "Linux"
-    url: /techblog/Linux/
+    url: /Linux/
   - title: "Cryptography"
-    url: /techblog/Cryptography/
+    url: /Cryptography/
   - title: "Network Protocols"
-    url: /techblog/NetworkProtocols/
+    url: /NetworkProtocols/
   - title: "Debug Interfaces"
-    url: /techblog/DebugInterfaces/
+    url: /DebugInterfaces/
