@@ -832,8 +832,6 @@ Physical  0x1f405fd0   →   value: 0xffffffff8104fedd  ✓
 
 ```
 
-Full virtual-to-physical address translation
-
 ---
 
 
