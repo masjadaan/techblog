@@ -862,6 +862,7 @@ The same four-level structure exists on other architectures under different name
 | PT    | PT (Page Table)                |
 
 
-**ARM:** uses `TTBR0` (userspace) and `TTBR1` (kernel) instead of CR3, with translation tables called Level 0–3.
+**ARM:**
+ARM uses `TTBR0` (userspace) and `TTBR1` (kernel) instead of CR3, with translation tables called Level 0–3.
 ---
 
