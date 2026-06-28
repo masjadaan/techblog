@@ -76,7 +76,7 @@ Since the number of address bits determines the size of the address space, we ge
 0x0000000000000000..............0x000fffffffffffff   (52-bit:   4 PB)
 ```
 
-On our testing machine, we can find the physical address bits it supports by running the following command:
+On our testing machine, we can find the number of physical address bits it supports by running the following command:
 
 ```sh
 grep "address sizes" /proc/cpuinfo | head -1
