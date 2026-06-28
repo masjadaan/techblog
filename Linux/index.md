@@ -15,3 +15,4 @@ Articles covering Linux internals, binary exploitation, and persistence techniqu
 | [ShellCodes](shellcodes/shellcodes) | Assembly, syscalls, null-byte removal |
 | [What is the password?](whatIsPassword/WhatIsThePassword) | /etc/passwd, /etc/shadow, hashing |
 | [Backdoor Via Vim](vimHacks/BackdoorViaVim/Backdoor_via_vim) | .vimrc, persistence, autocommands |
+| [Walking the Page Table](WalkingPageTable/WalkingPageTable) | x86_64 paging, virtual memory, kernel, GDB, QEMU |
