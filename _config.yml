@@ -17,6 +17,7 @@ plugins:
 
 author:
   name: "Mahmoud Jadaan"
+  avatar: "/assets/images/bio-photo.jpg"
   bio: "Security Researcher"
   links:
     - label: "GitHub"
