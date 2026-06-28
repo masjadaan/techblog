@@ -863,8 +863,5 @@ The same four-level structure exists on other architectures under different name
 
 
 **ARM:** uses `TTBR0` (userspace) and `TTBR1` (kernel) instead of CR3, with translation tables called Level 0–3.
-
-Linux requires a hardware MMU and abstracts over all of these with the PGD/PUD/PMD/PT naming.
-
 ---
 
