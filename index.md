@@ -36,6 +36,7 @@ Articles on Linux internals, cryptography attacks, network protocols, and hardwa
 | Article | Topics |
 |---------|--------|
 | [CAN Frames Spoofing](NetworkProtocols/CANBus/FrameSpoofing/SpoofingCANFrames) | CAN bus, automotive, frame injection |
+| [Bluetooth Low Energy (BLE)](NetworkProtocols/BluetoothBLE/) | BLE protocol, GATT, sniffing, CTF challenges |
 
 ---
 

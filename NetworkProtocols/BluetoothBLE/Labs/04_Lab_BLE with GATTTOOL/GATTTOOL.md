@@ -1,6 +1,16 @@
-# Understanding Bluetooth LE with GATTTOOL
-* * *
-![8b722ce2982395a3967fa50526a1a0c3.png](../../../../../_resources/8b722ce2982395a3967fa50526a1a0c3.png)
+---
+layout: single
+title: "Understanding Bluetooth LE with GATTTOOL"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, gatttool, gatt]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+![8b722ce2982395a3967fa50526a1a0c3.png](../../_resources/8b722ce2982395a3967fa50526a1a0c3.png)
 
 ## Introduction to GATTTOOL
 `gatttool` is a powerful command-line utility for interacting with Bluetooth Low Energy (BLE) devices. It allows you to discover services, characteristics, and descriptors, as well as read and write values to a BLE device.
@@ -20,7 +30,7 @@ help
 exit
 ```
 
-![bdf2bc5603f79cec3c639583f16586d5.png](../../../../../_resources/bdf2bc5603f79cec3c639583f16586d5.png)
+![bdf2bc5603f79cec3c639583f16586d5.png](../../_resources/bdf2bc5603f79cec3c639583f16586d5.png)
 
 ## Primary Service Discovery
 Once connected, the first step is discovering what services the device offers:
@@ -31,7 +41,7 @@ attr handle: 0x0014, end grp handle: 0x001c uuid: 00001800-0000-1000-8000-00805f
 attr handle: 0x0028, end grp handle: 0xffff uuid: 000000ff-0000-1000-8000-00805f9b34fb
 ```
 
-![3792dc57a9c0da8112b07a59a650eb6f.png](../../../../../_resources/3792dc57a9c0da8112b07a59a650eb6f.png)
+![3792dc57a9c0da8112b07a59a650eb6f.png](../../_resources/3792dc57a9c0da8112b07a59a650eb6f.png)
 
 Each line corresponds to a primary service declaration:
 - **attr handle**: The starting handle of the service
@@ -39,7 +49,7 @@ Each line corresponds to a primary service declaration:
 - **uuid**: The service's Universally Unique Identifier
 
 Some UUIDs are standardized by the [Bluetooth SIG](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Assigned_Numbers/out/en/Assigned_Numbers.pdf), while others are custom/proprietary. You can reference the Bluetooth SIG specifications to identify common services.
-![55bf9ac49566fabc21367fb0b3cd4fb3.png](../../../../../_resources/55bf9ac49566fabc21367fb0b3cd4fb3.png)
+![55bf9ac49566fabc21367fb0b3cd4fb3.png](../../_resources/55bf9ac49566fabc21367fb0b3cd4fb3.png)
 
 All handles between the start and end are "owned" by that service, and you can use them to discover or read/write characteristics.
 
@@ -62,10 +72,10 @@ handle: 0x0018, uuid: 00002a01-0000-1000-8000-00805f9b34fb
 handle: 0x0019, uuid: 00002803-0000-1000-8000-00805f9b34fb
 handle: 0x001a, uuid: 00002aa6-0000-1000-8000-00805f9b34fb
 ```
-![22867981e0ed827f8607b101e7765b8e.png](../../../../../_resources/22867981e0ed827f8607b101e7765b8e.png)
+![22867981e0ed827f8607b101e7765b8e.png](../../_resources/22867981e0ed827f8607b101e7765b8e.png)
 
 Also, we can find out the meaning of each UUID from the Bluetooth SIG specification.
-![ad52dd500965769f0734d5b5075a3bd1.png](../../../../../_resources/ad52dd500965769f0734d5b5075a3bd1.png)
+![ad52dd500965769f0734d5b5075a3bd1.png](../../_resources/ad52dd500965769f0734d5b5075a3bd1.png)
 
 Let's take the first characteristic, the Device Name, as an example:
 
@@ -94,7 +104,7 @@ This pattern repeats for every characteristic in the service:
 Now, let's read the handles using the `char-read-hnd` command. We’ll break down the output of each command and explain the meaning of the returned bytes.
 
 ### Reading handle 0x0014
-![cbdbfb8c34d63d3a3c112f0961f63964.png](../../../../../_resources/cbdbfb8c34d63d3a3c112f0961f63964.png)
+![cbdbfb8c34d63d3a3c112f0961f63964.png](../../_resources/cbdbfb8c34d63d3a3c112f0961f63964.png)
 ```
 [C8:C9:A3:FA:F1:6A][LE]> char-read-hnd 0x0014
 Characteristic value/descriptor: 00 18
@@ -104,7 +114,7 @@ Handle 0x0014 is the Service Declaration for the Generic Access service.
 - 00 18: This is the little-endian representation of the service UUID, which corresponds to 0x1800, as we saw when we ran the `primary` command.
 
 ### Reading handle 0x0015
-![288cde80b99febc8172a4e292773b085.png](../../../../../_resources/288cde80b99febc8172a4e292773b085.png)
+![288cde80b99febc8172a4e292773b085.png](../../_resources/288cde80b99febc8172a4e292773b085.png)
 ```
 char-read-hnd 0x0015
 Characteristic value/descriptor: 02 16 00 00 2a 
@@ -132,6 +142,6 @@ This declaration tells us:
 char-read-hnd 0x0016
 Characteristic value/descriptor: 32 62 30 30 30 34 32 66 37 34 38 31 63 37 62 30 35 36 63 34 62 34 31 30 64 32 38 66 33 33 63 66 
 ```
-![0a30d7774bb0a9f51fa21d0e6b2cec64.png](../../../../../_resources/0a30d7774bb0a9f51fa21d0e6b2cec64.png)
+![0a30d7774bb0a9f51fa21d0e6b2cec64.png](../../_resources/0a30d7774bb0a9f51fa21d0e6b2cec64.png)
 
 Handle 0x0016 contains the actual Characteristic Value — in this case, the device name. These bytes represent the device name in hexadecimal ASCII values.

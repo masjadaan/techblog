@@ -1,6 +1,16 @@
-# BLE Data Exchange: The Language of GATT
-* * *
-![cb56ed95dba74fa10d69bc42b9b767cc.png](../../../../_resources/cb56ed95dba74fa10d69bc42b9b767cc.png)
+---
+layout: single
+title: "BLE Data Exchange: The Language of GATT"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, gatt, data-exchange]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+![cb56ed95dba74fa10d69bc42b9b767cc.png](../../_resources/cb56ed95dba74fa10d69bc42b9b767cc.png)
 
 Now that we know how devices find each other and connect, let's talk about *how they talk*. This is where the **Generic Attribute Profile (GATT)** defines the rules of conversation. It's the language that allows a client to read, write, and subscribe to data on a server.
 
@@ -48,7 +58,7 @@ This is one of the most powerful features of BLE: the server can send data *with
 All data is stored in structures called **Attributes**. Think of an attribute as a single cell in a spreadsheet.
 
 Every attribute has four key parts:
-![c9b728cb0e0c17cf30dea3fa15444104.png](../../../../_resources/c9b728cb0e0c17cf30dea3fa15444104.png)
+![c9b728cb0e0c17cf30dea3fa15444104.png](../../_resources/c9b728cb0e0c17cf30dea3fa15444104.png)
 
 1.  **Handle:** A unique 2-byte address that the client uses to access the attribute.
 2.  **Type (UUID):** A label that defines *what kind of data* this attribute holds (e.g., "Battery Level," "Device Name").
@@ -100,7 +110,7 @@ This declaration acts as a header that says, "Everything that follows, until the
 
 This structure is what allows a client to easily discover what a server can do and how to interact with it efficiently.
 
-![e116e253a18bc72c1d05b47fcc58b372.png](../../../../_resources/e116e253a18bc72c1d05b47fcc58b372.png)
+![e116e253a18bc72c1d05b47fcc58b372.png](../../_resources/e116e253a18bc72c1d05b47fcc58b372.png)
 
 ## PDU Exchange Methods
 The Attribute Protocol outlines methods for both reading and writing

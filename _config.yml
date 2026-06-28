@@ -54,6 +54,9 @@ defaults:
       read_time: true
       show_date: true
 
+include:
+  - _resources
+
 exclude:
   - Gemfile
   - Gemfile.lock

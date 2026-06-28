@@ -1,9 +1,17 @@
-# BLE Connections: Establishing a Conversation
-* * *
+---
+layout: single
+title: "BLE Connections: Establishing a Conversation"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, connection, gatt]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
 
-![30a6e3da50e1b11bf78eae1f1e2d27bf.png](../../../../_resources/30a6e3da50e1b11bf78eae1f1e2d27bf.png)
-
-## Hello class!
+![30a6e3da50e1b11bf78eae1f1e2d27bf.png](../../_resources/30a6e3da50e1b11bf78eae1f1e2d27bf.png)
 
 Now that we understand how BLE devices introduce themselves (advertising), let's talk about how they start a sustained conversation. This process is called **forming a connection**. It's where the real, bidirectional data exchange happens.
 

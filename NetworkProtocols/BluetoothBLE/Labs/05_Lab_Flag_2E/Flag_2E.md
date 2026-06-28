@@ -1,6 +1,16 @@
-# Solving Flag 2E: Your First GATT Read
-* * *
-![cd8055088f573e39aedeb1202088bb41.png](../../../../../_resources/cd8055088f573e39aedeb1202088bb41.png)
+---
+layout: single
+title: "Solving Flag 2E: Your First GATT Read"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, ctf, gatt, read]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+![cd8055088f573e39aedeb1202088bb41.png](../../_resources/cd8055088f573e39aedeb1202088bb41.png)
 ## Hands-On with GATT Operations
 
 Excellent! You've submitted the practice flag. Now let's tackle your first real challenge: **Flag 2E**. This flag is designed to teach you the fundamental skill of reading and interpreting data from a specific GATT handle.
@@ -30,7 +40,7 @@ help
 exit
 ```
 
-![bdf2bc5603f79cec3c639583f16586d5.png](../../../../../_resources/bdf2bc5603f79cec3c639583f16586d5.png)
+![bdf2bc5603f79cec3c639583f16586d5.png](../../_resources/bdf2bc5603f79cec3c639583f16586d5.png)
 
 ## Primary Service Discovery
 Once connected, the first step is discovering what services the device offers:
@@ -41,7 +51,7 @@ attr handle: 0x0014, end grp handle: 0x001c uuid: 00001800-0000-1000-8000-00805f
 attr handle: 0x0028, end grp handle: 0xffff uuid: 000000ff-0000-1000-8000-00805f9b34fb
 ```
 
-![3792dc57a9c0da8112b07a59a650eb6f.png](../../../../../_resources/3792dc57a9c0da8112b07a59a650eb6f.png)
+![3792dc57a9c0da8112b07a59a650eb6f.png](../../_resources/3792dc57a9c0da8112b07a59a650eb6f.png)
 
 Each line corresponds to a primary service declaration:
 - **attr handle**: The starting handle of the service
@@ -49,7 +59,7 @@ Each line corresponds to a primary service declaration:
 - **uuid**: The service's Universally Unique Identifier
 
 Some UUIDs are standardized by the [Bluetooth SIG](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Assigned_Numbers/out/en/Assigned_Numbers.pdf), while others are custom/proprietary. You can reference the Bluetooth SIG specifications to identify common services.
-![55bf9ac49566fabc21367fb0b3cd4fb3.png](../../../../../_resources/55bf9ac49566fabc21367fb0b3cd4fb3.png)
+![55bf9ac49566fabc21367fb0b3cd4fb3.png](../../_resources/55bf9ac49566fabc21367fb0b3cd4fb3.png)
 
 All handles between the start and end are "owned" by that service, and you can use them to discover or read/write characteristics.
 
@@ -76,7 +86,7 @@ Characteristic value/descriptor: 64 32 30 35 33 30 33 65 30 39 39 63 65 66 66 34
 ```
 
 This is a hexadecimal representation of the data.
-![bca90079c5ce768a804ce78a86ae3746.png](../../../../../_resources/bca90079c5ce768a804ce78a86ae3746.png)
+![bca90079c5ce768a804ce78a86ae3746.png](../../_resources/bca90079c5ce768a804ce78a86ae3746.png)
 
 ## Step 3: Decode the Hexadecimal Data
 
@@ -91,7 +101,7 @@ d205303e099ceff44835
 ```
 
 This is the flag we need to submit.
-![ab6c0050522ef0255f98adc059f05b2c.png](../../../../../_resources/ab6c0050522ef0255f98adc059f05b2c.png)
+![ab6c0050522ef0255f98adc059f05b2c.png](../../_resources/ab6c0050522ef0255f98adc059f05b2c.png)
 
 ## Step 4: Submit the Flag and Claim Your Points
 
@@ -109,6 +119,6 @@ Verify your success by checking your updated score!
 ./get_score.sh C8:C9:A3:FA:F1:6A
 # Score:2 /20
 ```
-![264e16649a1b9f75a8e211b9df90359c.png](../../../../../_resources/264e16649a1b9f75a8e211b9df90359c.png)
+![264e16649a1b9f75a8e211b9df90359c.png](../../_resources/264e16649a1b9f75a8e211b9df90359c.png)
 
 Congratulations! You've successfully solved your first challenge. You've performed a core GATT operation: reading a characteristic value by its handle and interpreting the data.

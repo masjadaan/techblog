@@ -1,6 +1,16 @@
-# Practical BLE Packet Sniffing with Ubertooth
-* * *
-![c61448e9e93c308a6c3f9dd3e0c6026e.png](../../../../../_resources/c61448e9e93c308a6c3f9dd3e0c6026e.png)
+---
+layout: single
+title: "Practical BLE Packet Sniffing with Ubertooth"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, ubertooth, sniffing, scanning]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+![c61448e9e93c308a6c3f9dd3e0c6026e.png](../../_resources/c61448e9e93c308a6c3f9dd3e0c6026e.png)
 
 Alright, It's time to see the invisible. We've talked about advertising packets, connections, and data exchange. Now, let's actually *capture* these radio waves and analyze them.
 
@@ -33,7 +43,7 @@ A tool like the Ubertooth One is designed to monitor the advertising channels, c
 Your computer's built-in Bluetooth adapter is designed to *participate* in connections, not silently observe them. For sniffing, we need a dedicated radio that can listen in passively.
 
 **Ubertooth One**:
-![c9ec7e7216526a771735ef2106d3d35e.png](../../../../../_resources/c9ec7e7216526a771735ef2106d3d35e.png)
+![c9ec7e7216526a771735ef2106d3d35e.png](../../_resources/c9ec7e7216526a771735ef2106d3d35e.png)
 
 *   **What it is:** An open-source, low-cost Bluetooth sniffer. It's a specialized USB dongle that can monitor Bluetooth Classic and Low Energy traffic.
 *   **How it works:** It acts as a passive receiver, capturing raw packets from the air and sending them to your computer for analysis.
@@ -47,7 +57,7 @@ dmesg | tail
 ```
 
 You should see a message about a new USB device being attached.
-    ![dmesg output showing the Ubertooth being detected](../../../../../_resources/d3927c0bb19f7ad35ae4814b8391da2c.png)
+    ![dmesg output showing the Ubertooth being detected](../../_resources/d3927c0bb19f7ad35ae4814b8391da2c.png)
 
 ---
 
@@ -72,14 +82,14 @@ Let's check that the tools work
 ubertooth-util -h
 ```
 
-![d66de8cf5e00cd53da772ff45f5e9e34.png](../../../../../_resources/d66de8cf5e00cd53da772ff45f5e9e34.png)
+![d66de8cf5e00cd53da772ff45f5e9e34.png](../../_resources/d66de8cf5e00cd53da772ff45f5e9e34.png)
 
 Then to see the firmware version we can running.
 ```
 sudo ubertooth-util -v
 # Firmware version: 2020-12-R1 (API:1.07)
 ```
-![12c22d16d0813476302e7d2c3ed52a67.png](../../../../../_resources/12c22d16d0813476302e7d2c3ed52a67.png)
+![12c22d16d0813476302e7d2c3ed52a67.png](../../_resources/12c22d16d0813476302e7d2c3ed52a67.png)
 
 ### Step 3: Updating the Firmware (If Needed)
 
@@ -118,7 +128,7 @@ Point the Ubertooth near your ESP32 CTF target or any other BLE device (like a f
 ## 4. Analyzing the Capture in Wireshark
 
 If you open the saved `~/advertisement.pcap` file in Wireshark immediately, you might hit a snag: Wireshark won't know how to interpret the data.
-![6090b12976065a9827fb031b52fce643.png](../../../../../_resources/6090b12976065a9827fb031b52fce643.png)
+![6090b12976065a9827fb031b52fce643.png](../../_resources/6090b12976065a9827fb031b52fce643.png)
 
 This is because the Ubertooth uses a custom format. We need to tell Wireshark how to decode it.
 
@@ -127,7 +137,7 @@ This is because the Ubertooth uses a custom format. We need to tell Wireshark ho
 - Go to Edit -> Preferences.
 - In the preferences window, on the left sidebar, click on Protocols.
 - Scroll down and find DLT_USER. Click on it.
-![d254e6675b95019e0533bdb00753c352.png](../../../../../_resources/d254e6675b95019e0533bdb00753c352.png)
+![d254e6675b95019e0533bdb00753c352.png](../../_resources/d254e6675b95019e0533bdb00753c352.png)
 
 - Click the Edit... button next to "Encapsulations Table".
 - In the new window, click New.
@@ -135,13 +145,13 @@ This is because the Ubertooth uses a custom format. We need to tell Wireshark ho
 	- DLT: 147 (This is the number the Ubertooth uses)
 	- Payload Protocol: btle
 - Click OK, then OK again to close the preferences windows.
-![e6082501dbd5fa4ca2f2745baad231b6.png](../../../../../_resources/e6082501dbd5fa4ca2f2745baad231b6.png)
+![e6082501dbd5fa4ca2f2745baad231b6.png](../../_resources/e6082501dbd5fa4ca2f2745baad231b6.png)
 
 
 Now, open your `~/advertisement.pcap` file in Wireshark. You should see all the packets decoded clearly. You can filter for btle to display only BLE traffic, and click on any packet to drill down into its layers: the advertising header, MAC addresses, and the advertising data (AD structures). From this quick analysis, we can identify both the `BD_ADDR` and the name of our target ESP32:
 - **Device Name**: `BLECTF`
 - **BD_ADDR**: `C8:C9:A3:FA:F1:6A`
 
-![ebabb2b441429752cb941a791f432346.png](../../../../../_resources/ebabb2b441429752cb941a791f432346.png)
+![ebabb2b441429752cb941a791f432346.png](../../_resources/ebabb2b441429752cb941a791f432346.png)
 
 This provides a way to visualize and understand the wireless conversations happening all around you. Go forth and sniff!

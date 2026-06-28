@@ -1,5 +1,15 @@
-# Bluetooth Low Energy (BLE)
-* * *
+---
+layout: single
+title: "Bluetooth Low Energy (BLE)"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, wireless]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
 
 ## Introduction
 

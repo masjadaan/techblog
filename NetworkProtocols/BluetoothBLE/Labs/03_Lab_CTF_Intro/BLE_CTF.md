@@ -1,6 +1,16 @@
-# Introduction to the BLE CTF Challenges
-* * *
-![f06674c1e70013bebf29c359d5d92ffe.png](../../../../../_resources/f06674c1e70013bebf29c359d5d92ffe.png)
+---
+layout: single
+title: "Introduction to the BLE CTF Challenges"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, ctf, gatt]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+![f06674c1e70013bebf29c359d5d92ffe.png](../../_resources/f06674c1e70013bebf29c359d5d92ffe.png)
 ## Let the Games Begin!
 
 Welcome to the main event! Now that our lab is set up and our ESP32 is flashed, it's time to start hacking. We'll be working through the challenges in the **[BLE Capture the Flag (ble_ctf)](https://github.com/hackgnar/ble_ctf)** repository.
@@ -28,7 +38,7 @@ scan on
 ```
 
 Look for a device with a name related to BLECTF or a manufacturer data field you recognize. Note its BD_ADDR address (in our case: C8:C9:A3:FA:F1:6A).
-![8d92be2ff1623618dac06677087e6ef3.png](../../../../../_resources/8d92be2ff1623618dac06677087e6ef3.png)
+![8d92be2ff1623618dac06677087e6ef3.png](../../_resources/8d92be2ff1623618dac06677087e6ef3.png)
 
 
 ## 2. Your CTF Toolbox: Handy Scripts
@@ -144,7 +154,7 @@ Confirmed, we haven't solved anything yet.
 ./get_score.sh C8:C9:A3:FA:F1:6A
 # Score:1 /20
 ```
-![c23d86011aaaf2df15f39ca019fc2a74.png](../../../../../_resources/c23d86011aaaf2df15f39ca019fc2a74.png)
+![c23d86011aaaf2df15f39ca019fc2a74.png](../../_resources/c23d86011aaaf2df15f39ca019fc2a74.png)
 
 Congratulations! You've solved your first flag. Your score is now 1.
 

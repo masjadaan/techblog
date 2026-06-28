@@ -1,8 +1,16 @@
-# Solving Flag 4C: Spoofing Your BD_ADDR
-* * *
-![357b7b7af0a37610eff142248e75004a.png](../../../../../_resources/357b7b7af0a37610eff142248e75004a.png)
-
-## The Art of Bluetooth Anonymity
+---
+layout: single
+title: "Solving Flag 4C: Spoofing Your BD_ADDR"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, ctf, bd-addr, spoofing]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+![357b7b7af0a37610eff142248e75004a.png](../../_resources/357b7b7af0a37610eff142248e75004a.png)
 
 This challenge, **Flag 4C**, introduces **spoofing your Bluetooth Device Address (BD_ADDR)**. Just like with Wi-Fi MAC addresses, changing your BD_ADDR can be essential for privacy testing, bypassing access control lists, or simulating different devices.
 

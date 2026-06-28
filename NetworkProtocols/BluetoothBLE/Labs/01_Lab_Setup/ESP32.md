@@ -1,6 +1,16 @@
-# Setting Up Your Hands-On BLE Lab
-* * *
-![218a138725010addb8ea68a296d4ddcb.png](../../../../../_resources/218a138725010addb8ea68a296d4ddcb.png)
+---
+layout: single
+title: "Setting Up Your Hands-On BLE Lab"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, esp32, lab-setup]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+![218a138725010addb8ea68a296d4ddcb.png](../../_resources/218a138725010addb8ea68a296d4ddcb.png)
 
 ## Welcome to the Lab Session!
 
@@ -33,10 +43,10 @@ The ESP32 is the star of our show. It's an incredibly popular, powerful, and—m
 *   **What it looks like:** The typical ESP32 DevKit has a USB port for power and programming, plenty of pins for expansion.
 
 **Front View:**
-![Front side of an ESP32 development board](../../../../../_resources/5f68af61a04f6e5bf527fb600e2bfe6a.png)
+![Front side of an ESP32 development board](../../_resources/5f68af61a04f6e5bf527fb600e2bfe6a.png)
 
 **Back View:**
-![Back side of an ESP32 development board](../../../../../_resources/852636fc936156cc0e9e2a1443467c60.png)
+![Back side of an ESP32 development board](../../_resources/852636fc936156cc0e9e2a1443467c60.png)
 
 ### Connecting Your ESP32
 
@@ -49,7 +59,7 @@ dmesg | tail
 ```
 
 You should see kernel messages indicating a new USB serial device has been connected.
-![Example dmesg output showing a USB serial device (ttyUSB0) being connected](../../../../../_resources/22dd1599fbce8530ef3c8ca0d94fea35.png)
+![Example dmesg output showing a USB serial device (ttyUSB0) being connected](../../_resources/22dd1599fbce8530ef3c8ca0d94fea35.png)
 
 3.  Note the device name. It will almost always be `/dev/ttyUSB0` (if you don't have other serial devices). You can list it with:
 ```bash
@@ -145,6 +155,6 @@ chmod +x flash_esp32.sh
 ```
 
 The tool will erase the old firmware and write the new one. In a few seconds, your ESP32 will reboot and become a brand new BLE CTF target, ready for you to discover and hack!
-![e9750dc33e197f634615525e0b5f04d6.png](../../../../../_resources/e9750dc33e197f634615525e0b5f04d6.png)
+![e9750dc33e197f634615525e0b5f04d6.png](../../_resources/e9750dc33e197f634615525e0b5f04d6.png)
 
 In our next lesson, we'll power up our Kali machine and start using bluetoothctl and gatttool to interact with our new device. Get ready to put all that theory into practice!

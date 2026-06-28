@@ -1,8 +1,17 @@
-# Solving Flag 40: Subscribing to Notifications
-* * *
-![4e48ebd992a8ae070469493e4ea809a2.png](../../../../../_resources/4e48ebd992a8ae070469493e4ea809a2.png)
+---
+layout: single
+title: "Solving Flag 40: Subscribing to Notifications"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, ctf, gatt, notifications]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+![4e48ebd992a8ae070469493e4ea809a2.png](../../_resources/4e48ebd992a8ae070469493e4ea809a2.png)
 
-## Unlocking Server-Initiated Communication
 
 Welcome to a new BLE concept! **Flag 40** introduces **notifications**, a powerful feature where the GATT Server (the ESP32) can push data to the Client (your machine) without being asked. This is essential for real-time data like sensor readings.
 

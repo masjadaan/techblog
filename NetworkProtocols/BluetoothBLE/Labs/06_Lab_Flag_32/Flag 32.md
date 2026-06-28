@@ -1,8 +1,17 @@
-# Solving Flag 32: Reading and Writing Handles
-* * *
-![0fcba9213b27b74801190ebeaeb73553.png](../../../../../_resources/0fcba9213b27b74801190ebeaeb73553.png)
+---
+layout: single
+title: "Solving Flag 32: Reading and Writing Handles"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, ctf, gatt, handles]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+![0fcba9213b27b74801190ebeaeb73553.png](../../_resources/0fcba9213b27b74801190ebeaeb73553.png)
 
-## Mastering Two-Way Communication
 
 Great job on the first read-based challenge! Now let's level up. **Flag 32** introduces a another concept: **writing data back to a GATT characteristic**. This is how you send commands, change settings, or—in our case—trigger a response that contains a flag.
 

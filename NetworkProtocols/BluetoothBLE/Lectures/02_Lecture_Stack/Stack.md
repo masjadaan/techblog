@@ -1,5 +1,15 @@
-# Bluetooth LE Stack
-* * *
+---
+layout: single
+title: "Bluetooth LE Stack"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, stack, protocol]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
 
 In the second article, we're going to break down the architecture of Bluetooth Low Energy. Think of this as the "blueprint" that explains how all the different parts of a BLE device work together to create a connection, send data, and manage power efficiently.
 
@@ -7,7 +17,7 @@ Let's start with the big picture. The entire BLE system is organized into a **st
 
 Here’s a visual overview of the entire stack to keep in mind as we go through each part:
 
-![4ce698e66f2c78937420595a52403160.png](../../../../_resources/4ce698e66f2c78937420595a52403160.png)
+![4ce698e66f2c78937420595a52403160.png](../../_resources/4ce698e66f2c78937420595a52403160.png)
 
 ---
 
@@ -39,7 +49,7 @@ Most importantly, GAP defines two fundamental **roles**:
     *   It can connect to multiple Peripherals at once and manages those connections.
     *   Think of it as the "controlling" device.
 
-![2856cc80697a90b44a119343bda1bbc3.png](../../../../_resources/2856cc80697a90b44a119343bda1bbc3.png)
+![2856cc80697a90b44a119343bda1bbc3.png](../../_resources/2856cc80697a90b44a119343bda1bbc3.png)
 
 > **Key Takeaway:** The Peripheral *advertises*, and the Central *connects*.
 
@@ -59,7 +69,7 @@ GATT organizes attributes into a logical hierarchy that makes sense to developer
 ```
 Profile -> Service -> Characteristic -> Attribute
 ```
-![8d2ea4d1a923ff6c755e9efbec501f8b.png](../../../../_resources/8d2ea4d1a923ff6c755e9efbec501f8b.png)
+![8d2ea4d1a923ff6c755e9efbec501f8b.png](../../_resources/8d2ea4d1a923ff6c755e9efbec501f8b.png)
 
 Imagine a filing cabinet in a doctor's office. This is how GATT organizes data:
 
@@ -113,7 +123,7 @@ The Controller is the muscle. It handles all the real-time, low-level radio oper
 The LL manages the state of the radio and directly controls the Physical Layer. It can be in one of several states: **standby, advertising, scanning, initiating, or connected.**
 
 A critical concept at this layer is the **Bluetooth Device Address (BD_ADDR)**. This is a device's unique 48-bit identifier, much like a MAC address for Wi-Fi.
-![afd8432dfc239780659747e3e0f57729.png](../../../../_resources/afd8432dfc239780659747e3e0f57729.png)
+![afd8432dfc239780659747e3e0f57729.png](../../_resources/afd8432dfc239780659747e3e0f57729.png)
 
 
 Let's dissect a typical Public `BD_ADDR`: **`C8:C9:A3:FA:F1:6A`** 
@@ -128,7 +138,7 @@ There are two main types of addresses:
     *   **Static Random:** Fixed until the next power cycle. A cheap alternative to a public address.
     *   **Private Random (Resolvable):** Changes frequently using a special key "Identity Resolving Key (IRK)" to prevent tracking. Only trusted devices (that have the IRK) can figure out the device's real identity. This is key for privacy.
     *   **Private Random (Non-Resolvable):** Also changes, but cannot be resolved to a real identity. Rarely used.
-![b14c74744289d52444f1857a140ef86f.png](../../../../_resources/b14c74744289d52444f1857a140ef86f.png)
+![b14c74744289d52444f1857a140ef86f.png](../../_resources/b14c74744289d52444f1857a140ef86f.png)
 
 
 ### Physical Layer (PHY)

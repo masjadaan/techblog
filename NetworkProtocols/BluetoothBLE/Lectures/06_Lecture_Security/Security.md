@@ -1,6 +1,16 @@
-# BLE Security: Locking Down the Conversation
-* * *
-![dfc874d248d413ad6955b4e6d831722e.png](../../../../_resources/dfc874d248d413ad6955b4e6d831722e.png)
+---
+layout: single
+title: "BLE Security: Locking Down the Conversation"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, security, pairing, encryption]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+![dfc874d248d413ad6955b4e6d831722e.png](../../_resources/dfc874d248d413ad6955b4e6d831722e.png)
 
 Today we're covering **Security** features in BLE. When our BLE devices are transmitting sensitive data like health information or door lock codes, we need to ensure that conversation is private and secure from eavesdroppers. Let's break down how BLE accomplishes this.
 
@@ -64,7 +74,7 @@ Now that the secure link is established with the LTK, the devices use it to secu
 *   **Connection Signature Resolving Key (CSRK):** Used for data signing on unencrypted links.
 
 This phase finalizes the **bonding** process, as these keys are stored for future use.
-![8f33b30afbba063467def28a23839884.png](../../../../_resources/8f33b30afbba063467def28a23839884.png)
+![8f33b30afbba063467def28a23839884.png](../../_resources/8f33b30afbba063467def28a23839884.png)
 
 ---
 

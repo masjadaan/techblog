@@ -1,9 +1,18 @@
-# Solving Flag 42: Subscribing to Indications
-* * *
+---
+layout: single
+title: "Solving Flag 42: Subscribing to Indications"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, ctf, gatt, indications]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
 
-![3fe46b22b5c1ef14bde7088190851f7c.png](../../../../../_resources/3fe46b22b5c1ef14bde7088190851f7c.png)
+![3fe46b22b5c1ef14bde7088190851f7c.png](../../_resources/3fe46b22b5c1ef14bde7088190851f7c.png)
 
-## Mastering Acknowledged Data Push
 
 Excellent work on handling notifications! Now we're moving to its more reliable sibling: **Indications**. This challenge, **Flag 42**, builds directly on the previous concept but introduces a crucial difference—guaranteed delivery.
 

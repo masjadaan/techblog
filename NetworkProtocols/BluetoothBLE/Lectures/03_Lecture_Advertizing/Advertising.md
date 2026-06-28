@@ -1,6 +1,16 @@
-# BLE Advertising & Scanning: The Art of the Introduction
-* * *
-![a2160de4fd6bcbb2bca64580971c6eba.png](../../../../_resources/a2160de4fd6bcbb2bca64580971c6eba.png)
+---
+layout: single
+title: "BLE Advertising & Scanning: The Art of the Introduction"
+date: 2026-06-28
+categories: [Network Protocols]
+tags: [bluetooth, ble, advertising, scanning]
+author_profile: true
+toc: true
+toc_sticky: true
+read_time: true
+show_date: true
+---
+![a2160de4fd6bcbb2bca64580971c6eba.png](../../_resources/a2160de4fd6bcbb2bca64580971c6eba.png)
 
 Today, we're diving into one of the most fundamental concepts in Bluetooth Low Energy: **Advertising and Scanning**. This is how BLE devices introduce themselves and find each other in the wild. 
 
@@ -37,7 +47,7 @@ The 2.4 GHz band used by BLE is like a crowded highway with 40 lanes (channels).
 *   **Why Three Channels?** It's for **redundancy**. If one channel is clogged with Wi-Fi interference, the packet might get through on another.
 *   **Secondary Data Channels (0-36):** These are the other 37 lanes, used almost exclusively for **high-speed data transfer *after* a connection is established**.
 
-![Visualization of the 40 BLE channels, highlighting the three primary advertising channels](../../../../_resources/9bc4d2f31a110cfa6804ab8f23a241ab.png)
+![Visualization of the 40 BLE channels, highlighting the three primary advertising channels](../../_resources/9bc4d2f31a110cfa6804ab8f23a241ab.png)
 
 ---
 
@@ -86,7 +96,7 @@ Every packet has a header and a payload.
 
 **The Header tells the scanner how to interpret the packet and the Payload contains the actual data**
 
-![3f2f332d893cfbc061e6a4bf8db193d3.png](../../../../_resources/3f2f332d893cfbc061e6a4bf8db193d3.png)
+![3f2f332d893cfbc061e6a4bf8db193d3.png](../../_resources/3f2f332d893cfbc061e6a4bf8db193d3.png)
 
 *   **PDU Type:** It defines the advertising type (`ADV_IND`, `ADV_SCAN_IND`, etc.).
 *   **TxAdd/RxAdd:** Flags indicating if the transmitter and receiver addresses are **Public** (0) or **Random** (1).
