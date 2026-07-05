@@ -41,20 +41,8 @@ Answering these questions requires understanding how memory addressing works. In
 
 Before discussing virtual memory, here is a brief recap: at a high level, a computer consists of a CPU, memory, storage devices, and peripheral hardware connected through system buses.
 
-```
-                             ┌──────────────────────────┐
-┌────────┐                   │           CPU            │
-│ Memory │◄──┐               │  ┌──────────┬─────────┐  │
-└────────┘   │  ┌──────────┐ │  │Registers │   CU    │  │
-             ├─►│  Bridge  │◄├─►│  L1 Cache│   ALU   │  │
-┌────────┐   │  └──────────┘ │  ├──────────┴─────────┤  │
-│  Disk  │◄──┤               │  │       L2 Cache     │  │
-└────────┘   │               │  └────────────────────┘  │
-             │               └──────────────────────────┘
-┌──────────┐ │
-│ Network  │◄┘
-└──────────┘
-```
+![Computer Architecture](./img/computerArch.png)
+
 
 The CPU reads data from memory, performs some instructions, and writes results back to memory. While registers and CPU caches provide very fast storage, they are limited in size. That is why most of a program's code and data resides in RAM.
 
@@ -115,7 +103,7 @@ The corresponding virtual address is derived using `__START_KERNEL_map`, a compi
 #define __START_KERNEL_map	_AC(0xffffffff80000000, UL)
 
 Kernel_text_virtual_addr = __START_KERNEL_map  +  CONFIG_PHYSICAL_START
-                         = 0xffffffff80000000  +  0x1000000 = 0xffffffff81000000
+Kernel_text_virtual_addr = 0xffffffff80000000  +  0x1000000 = 0xffffffff81000000
 ```
 
 So with KASLR off, the kernel text always starts at virtual address `0xffffffff81000000` and physical address `0x1000000` — every boot, on every run.
@@ -134,19 +122,8 @@ Virtual memory exists to solve problems that physical memory alone cannot addres
 
 The key idea is that virtual memory gives each process its own independent view of memory:
 
-```
-Physical Memory (shared by whole system)
-0x0000000000000000......................0x000fffffffffffff
-    ▲              ▲              ▲              ▲
-    │              │              │              │
-┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐
-│   P1    │  │   P2    │  │   P3    │  │   P4    │
-│0x000... │  │0x000... │  │0x000... │  │0x000... │
-│  ...    │  │  ...    │  │  ...    │  │  ...    │
-│0x7ff... │  │0x7ff... │  │0x7ff... │  │0x7ff... │
-└─────────┘  └─────────┘  └─────────┘  └─────────┘
-Virtual memory (each process sees its own)
-```
+![Physical Memory](./img/phyMemory.png)
+
 
 The OS kernel, in collaboration with the CPU hardware, maintains mappings between each process's virtual addresses and the physical addresses they correspond to.
 
@@ -243,16 +220,7 @@ The CPU must keep track of how virtual pages map to physical page frames. This m
 
 This is the simplest design: we have only one flat table of 512 entries, where each entry holds the physical address of one page. So the size of a table is `512 * 8 bytes = 4096 bytes` and we have 512 pages; each page is 4 KB, which means the address space is `512 * 4 KB = 2 MB`. Two issues here: `2 MB` is too small for a process, and a single flat table cannot handle non-contiguous virtual memory.
 
-```
-Page Table
-┌─────┬────────────┐
-│ 000 │ 0xba106000 │
-│ 001 │ 0x541f0000 │
-│ 002 │ 0x4f654000 │
-│ ... │ ...        │
-│ 511 │ 0xfd255000 │
-└─────┴────────────┘
-```
+![Single Page Table](./img/singlePageTable.png)
 
 
 
@@ -266,24 +234,7 @@ In order to scale further, the **Page Directory** (PD) was introduced. It has 51
 
 Entries marked NONE cost nothing — unused Page Tables are simply not allocated. This is how non-contiguous virtual memory is supported efficiently.
 
-```
-Page Directory
-┌─────┬────────┐
-│ 000 │ PT A   │──┐   Page Table A
-│ 001 │ NONE   │  └──►┌─────┬──────────┐
-│ 002 │ PT B   │──┐   │ 000 │0xba106000│
-│ 003 │ NONE   │  │   │ 001 │0x541f0000│
-│ ... │ ...    │  │   │ 511 │0x4f654000│
-│ 511 │ NONE   │  │   └─────┴──────────┘
-└─────┴────────┘  │
-                  │   Page Table B
-                  └──►┌─────┬──────────┐
-                      │ 000 │0xfd255000│
-                      │ ... │          │
-                      │ 511 │0xbb315000│
-                      └─────┴──────────┘
-```
-
+![Adding Page Directory](./img/PageDirectory.png)
 
 
 ### Add PDPT (three levels — 512 GB)
@@ -305,21 +256,7 @@ The final level added to x86_64 is the Page Map Level 4 (PML4), with 512 entries
 
 This four-level structure is what modern x86_64 systems use and will be the focus of this article.
 
-```
-One Page Table Level (4096 bytes = 1 page)
-┌─────────────────────────────┐
-│ Entry 0     (8 bytes)       │  ◄── index 0
-├─────────────────────────────┤
-│ Entry 1     (8 bytes)       │  ◄── index 1
-├─────────────────────────────┤
-│ Entry 2     (8 bytes)       │  ◄── index 2
-├─────────────────────────────┤
-│ ...                         │
-├─────────────────────────────┤
-│ Entry 511   (8 bytes)       │  ◄── index 511
-└─────────────────────────────┘
-    512 × 8 = 4096 bytes = 0x1000 = 1 page
-```
+![512 Entries in One Page Table Level](./img/EntriesPageLevel.png)
 
 ---
 
@@ -333,54 +270,12 @@ Although x86_64 uses 64-bit registers, only 48 bits are currently used for virtu
 
 A 48-bit virtual address is split into 5 parts: 4 are used as page-table indices and one as the page offset:
 
-```
-┌─────────┬─────────┬─────────┬─────────┬──────────────┐
-│  9 bits │  9 bits │  9 bits │  9 bits │   12 bits    │
-│  PML4   │  PDPT   │   PD    │   PT    │    offset    │
-└─────────┴─────────┴─────────┴─────────┴──────────────┘
-◄──────────────── 48 bits total (9+9+9+9+12) ──────────►
-```
+![Structure of 48-bit Virtual Address](./img/48_virtualAddress.png)
+
 
 We mentioned before that at each level there are 512 entries, so the 9-bit group selects one of 512 entries at that level (2^9 = 512). The final 12 bits are the byte offset within the physical page (2^12 = 4096 = one page). So if we try to picture how the virtual address is related to the different memory levels, we come up with something like this:
 
-```
-Virtual Address (48 bits)
-┌────────┬────────┬────────┬────────┬────────────────┐
-│  [47-39]  [38-30]  [29-21]  [20-12]     [11-0]     │
-│  PML4idx  PDPTidx   PDidx    PTidx       offset    │
-└────┬───┴────┬───┴────┬───┴────┬───┴────────────────┘
-     │        │        │        │
-     ▼        │        │        │
-┌─────────┐   │        │        │
-│  PML4   │   │        │        │      Level 4
-│ (512    │   │        │        │
-│ entries)│   │        │        │
-└────┬────┘   │        │        │
-     │        ▼        │        │
-     │   ┌─────────┐   │        │
-     └──►│  PDPT   │   │        │      Level 3
-         │ (512    │   │        │
-         │ entries)│   │        │
-         └────┬────┘   │        │
-              │        ▼        │
-              │   ┌─────────┐   │
-              └──►│   PD    │   │      Level 2
-                  │ (512    │   │
-                  │ entries)│   │
-                  └────┬────┘   │
-                       │        ▼
-                       │   ┌─────────┐
-                       └──►│   PT    │      Level 1
-                           │ (512    │
-                           │ entries)│
-                           └────┬────┘
-                                │
-                                ▼
-                         ┌─────────────┐
-                         │ Physical    │
-                         │ Page (4 KB) │
-                         └─────────────┘
-```
+![Four Levels](./img/Levels4.png)
 
 In the diagram we see that the PML4 level is indexed using virtual address bits 47–39, the PDPT level using bits 38–30, the PD using bits 29–21, and finally the PT level using bits 20–12. Let's see that in action.
 
@@ -461,34 +356,13 @@ The 64 bits of one entry are split into several parts:
 - Bits 52-62: ignored (available to the OS)
 - Bit 63: **NX** (No-Execute) — if set, no code can execute from any page reachable through this entry
 
-```
-63  62     52 51                  12 11          0
-┌───┬─────────┬──────────────────────┬─────────────┐
-│NX │ ignored │  physical address    │ control bits│
-│   │ (52-62) │  of next-level table │ (P, R/W...) │
-└───┴─────────┴──────────────────────┴─────────────┘
-```
+![64-bit Entrey](./img/64bitMeaning.png)
 
 This structure is almost the same across all levels with some differences. The following sections show the meaning of each bit based on the level it belongs to.
 
 ### PML4
 
-```
-PML4                                                            Present ──────┐
-                                                            Read/Write ──────┐|
-                                                      User/Supervisor ──────┐||
-                                                  Page Write Through ──────┐|||
-                                               Page Cache Disabled ──────┐ ||||
-                                                         Accessed ──────┐| ||||
-                                                         Ignored ──────┐|| ||||
-                                                       Reserved ──────┐||| ||||
-┌─ NX          ┌─ Ignored                              Ignored ──┬──┐ |||| ||||
-|┌───────────┐ |┌──────────────────────────────────────────────┐ |  | |||| ||||
-||  Ignored  | ||               PDPT Physical Address          | |  | |||| ||||
-||           | ||                                              | |  | |||| ||||
-XXXX XXXX XXXX 0XXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX 0XXX XXXX
-       56        48        40        32        24        16         8         0
-```
+![PML4](./img/pml4.png)
 
 
 | Bits  | Field                         | Meaning                                                                                               |
@@ -511,22 +385,8 @@ XXXX XXXX XXXX 0XXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX 0XXX XXXX
 
 ### PDPT
 
-```
-PDPT                                                            Present ──────┐
-                                                            Read/Write ──────┐|
-                                                      User/Supervisor ──────┐||
-                                                  Page Write Through ──────┐|||
-                                               Page Cache Disabled ──────┐ ||||
-                                                         Accessed ──────┐| ||||
-                                                         Ignored ──────┐|| ||||
-                                                      Page Size ──────┐||| ||||
-┌─ NX          ┌─ Ignored                              Ignored ──┬──┐ |||| ||||
-|┌───────────┐ |┌──────────────────────────────────────────────┐ |  | |||| ||||
-||  Ignored  | ||               PD Physical Address            | |  | |||| ||||
-||           | ||                                              | |  | |||| ||||
-XXXX XXXX XXXX 0XXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX 0XXX XXXX
-       56        48        40        32        24        16         8         0
-```
+![PDPT](./img/pdpt.png)
+
 
 Bits 0–6, 8–11, 12–51, 52–62, 63: same as PML4.
 
@@ -540,22 +400,8 @@ Bits 0–6, 8–11, 12–51, 52–62, 63: same as PML4.
 
 ### PD
 
-```
-PD                                                              Present ──────┐
-                                                            Read/Write ──────┐|
-                                                      User/Supervisor ──────┐||
-                                                  Page Write Through ──────┐|||
-                                               Page Cache Disabled ──────┐ ||||
-                                                         Accessed ──────┐| ||||
-                                                         Ignored ──────┐|| ||||
-                                                      Page Size ──────┐||| ||||
-┌─ NX          ┌─ Ignored                              Ignored ──┬──┐ |||| ||||
-|┌───────────┐ |┌──────────────────────────────────────────────┐ |  | |||| ||||
-||  Ignored  | ||                PT Physical Address           | |  | |||| ||||
-||           | ||                                              | |  | |||| ||||
-XXXX XXXX XXXX 0XXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX 0XXX XXXX
-       56        48        40        32        24        16         8         0
-```
+![PD](./img/pd.png)
+
 
 Bits 0–6, 8–11, 12–51, 52–62, 63: same as PML4.
 
@@ -569,23 +415,8 @@ Bits 0–6, 8–11, 12–51, 52–62, 63: same as PML4.
 
 ### PT
 
-```
-PT                                                              Present ──────┐
-                                                            Read/Write ──────┐|
-                                                      User/Supervisor ──────┐||
-                                                  Page Write Through ──────┐|||
-                                               Page Cache Disabled ──────┐ ||||
-                                                         Accessed ──────┐| ||||
-┌─── NX                                                    Dirty ──────┐|| ||||
-|┌───┬─ Memory Protection Key              Page Attribute Table ──────┐||| ||||
-||   |┌──────┬─── Ignored                               Global ─────┐ |||| ||||
-||   ||      | ┌─── Reserved                          Ignored ───┬─┐| |||| ||||
-||   ||      | |┌──────────────────────────────────────────────┐ | || |||| ||||
-||   ||      | ||            4KB Page Physical Address         | | || |||| ||||
-||   ||      | ||                                              | | || |||| ||||
-XXXX XXXX XXXX 0XXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX
-       56        48        40        32        24        16         8         0
-```
+![PT](./img/pt.png)
+
 
 Bits 0–5, 63: same as PML4. The PT entry has several unique bits because it describes an actual data page, not just a pointer to another table.
 
@@ -612,13 +443,8 @@ As we know, on a running Linux machine there could be many running processes; ho
 
 Actually, the CPU stores the physical address of current process's PML4 in a special control register called **CR3**:
 
-```
-CR3 register ──► physical address of PML4
-PML4 entry   ──► physical address of PDPT
-PDPT entry   ──► physical address of PD
-PD entry     ──► physical address of PT
-PT entry     ──► physical address of final page
-```
+![Sequece Sarts at CR3](./img/cr3source.png)
+
 
 CR3 is only accessible in **ring 0** (kernel mode). User-space processes cannot modify it. When the OS switches from one process to another, it loads the new process's PML4 address into CR3 — instantly switching the entire virtual address space. This is the hardware mechanism that enforces isolation.
 
@@ -651,19 +477,7 @@ $1 = 0x280b004
 
 CR3 holds the physical address of PML4, but as established in §8, the lowest 12 bits are control bits, not part of the address. We mask them off to get the PML4 base physical address:
 
-```sh
-CR3 = 0x280b004
-
-bit position:  51 ............. 12  11 ......... 0
-               ┌────────────────────┬─────────────┐
-               │   PML4 address     │ control bits│
-               │   0x280b           │   0x004     │
-               └────────────────────┴─────────────┘
-                        ▲                  ▲
-               address already        12 bits of
-               at the right           noise to remove
-               bit positions
-```
+![CR3 Points to PML4](./img/cr3ToPml4.png)
 
 
 ```sh
@@ -674,20 +488,8 @@ Now we have the base physical address `0x280b000` of PML4. We also know that it 
 
 From the GDB output, we will translate the RSP register value 0xffffc90000003fd0 to its physical address. We know that this virtual address is split into parts, so first we start by calculating the indices as we did before:
 
-```
-Virtual Address (48 bits)
-┌────────┬────────┬────────┬────────┬────────────────┐
-│  [47-39]  [38-30]  [29-21]  [20-12]     [11-0]     │
-│  PML4idx  PDPTidx   PDidx    PTidx       offset    │
-└────┬───┴────┬───┴────┬───┴────┬───┴────────────────┘
+![Calculating Indices](./img/indeces.png)
 
-addr = 0xffffc90000003fd0
-PML4idx = (addr >> 39) & 0x1ff   = 0x192 = 402
-PDPTidx = (addr >> 30) & 0x1ff   = 0x0   = 0
-PDidx   = (addr >> 21) & 0x1ff   = 0x0   = 0
-PTidx   = (addr >> 12) & 0x1ff   = 0x3   = 3
-offset  =  addr        & 0xfff   = 0xfd0
-```
 
 ### Level 4 — PML4
 We have the PML4 base address and its index we can use them to obtain the address of the PML4 entry that points to PDPT
@@ -816,21 +618,7 @@ Observe that it is the same as the calculated one.
 
 So the full translation is confirmed.
 
-```sh
-Virtual   0xffffc90000003fd0
-            │
-            ▼  page table walk
-         ┌─────────────────────────────────────────┐
-         │  PML4[402] → PDPT[0] → PD[0] → PT[3]    │
-         └─────────────────────────────────────────┘
-            │
-            ▼
-base addr 0x1f405000   physical page base
-          +    0xfd0   offset
-Physical  0x1f405fd0   →   value: 0xffffffff8104fedd  ✓
-         ────────────
-
-```
+![Full Translation](./img/finalTranslation.png)
 
 ---
 
@@ -861,8 +649,8 @@ The same four-level structure exists on other architectures under different name
 | PD    | PMD (Page Mid-Level Directory) |
 | PT    | PT (Page Table)                |
 
-
 **ARM:**
 ARM uses `TTBR0` (userspace) and `TTBR1` (kernel) instead of CR3, with translation tables called Level 0–3.
+
 ---
 
