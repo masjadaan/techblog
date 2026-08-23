@@ -13,12 +13,12 @@ Articles on Linux internals, cryptography attacks, network protocols, and hardwa
 
 | Article | Topics |
 |---------|--------|
-| [Hijacking Shared Libraries](Linux/HijackingSharedLibraries/HijackingSharedLibraries) | LD_PRELOAD, shared objects, privilege escalation |
-| [Have You Met The Dynamic Linker](Linux/dynamicLinker/dynamicLinker) | ELF loading, runtime linking, ld.so |
-| [ShellCodes](Linux/shellcodes/shellcodes) | Assembly, syscalls, null-byte removal |
-| [What is the password?](Linux/whatIsPassword/WhatIsThePassword) | /etc/passwd, /etc/shadow, hashing |
-| [Backdoor Via Vim](Linux/vimHacks/BackdoorViaVim/Backdoor_via_vim) | .vimrc, persistence, autocommands |
-| [Walking the Page Table](Linux/WalkingPageTable/WalkingPageTable) | x86_64 paging, virtual memory, kernel, GDB, QEMU |
+| [Hijacking Shared Libraries](Linux/UserLand/HijackingSharedLibraries/HijackingSharedLibraries) | LD_PRELOAD, shared objects, privilege escalation |
+| [Have You Met The Dynamic Linker](Linux/UserLand/dynamicLinker/dynamicLinker) | ELF loading, runtime linking, ld.so |
+| [ShellCodes](Linux/UserLand/shellcodes/shellcodes) | Assembly, syscalls, null-byte removal |
+| [What is the password?](Linux/UserLand/whatIsPassword/WhatIsThePassword) | /etc/passwd, /etc/shadow, hashing |
+| [Backdoor Via Vim](Linux/UserLand/vimHacks/BackdoorViaVim/Backdoor_via_vim) | .vimrc, persistence, autocommands |
+| [Walking the Page Table](Linux/KernelLand/WalkingPageTable/WalkingPageTable) | x86_64 paging, virtual memory, kernel, GDB, QEMU |
 
 ---
 

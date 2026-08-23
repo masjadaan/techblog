@@ -73,7 +73,7 @@ nasm -f elf64 syscall1.s
 gcc syscall1.o -o syscall1
 ./syscall1
 ```
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/shellcodes/images/syscall_write.png)
+![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/shellcodes/images/syscall_write.png)
 
 ### Note
 - In 32-bit x86 systems, the int 0x80 instruction is commonly employed to initiate an interrupt. In 64-bit systems, this is substituted with the syscall instruction.
@@ -139,7 +139,7 @@ sudo chmod +s syscall_shell
 # execute
 ./syscall_shell
 ```
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/shellcodes/images/shell_with_nulls.png)
+![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/shellcodes/images/shell_with_nulls.png)
 
 Looking at the xxd output of the object file `syscall_shell.o`, it's clear that our shellcode contains a lot of null bytes, which is a problem (For demonstration purposes, I am using a complete assembly code). In many exploitation scenarios, we often rely on string manipulation functions like strcpy() or gets() to copy data into a buffer. However, when these functions encounter a null byte, they interpret it as the end of the string, leading to the failure of our shellcode execution.
 ```sh
@@ -148,7 +148,7 @@ xxd -ps syscall_shell.o | head
 	# -ps display the machine code without any hexadecimal translation.
 ```
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/shellcodes/images/opcodes_with_nulls.png)
+![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/shellcodes/images/opcodes_with_nulls.png)
 
 
 At this point, we're facing two issues. First, we need to eliminate the null bytes (0x00). Second, the previous code is a complete assembly code with its sections, which was meant to illustrate our concept. However, in practical terms, we only need the instructions to spawn a shell. Let's tackle these two challenges in the next steps.
@@ -159,7 +159,7 @@ We're facing a challenge with null bytes in our assembly code. Take, for instanc
 
 To overcome this issue, we can use tricks like accessing smaller portions of a 64-bit register directly. For instance, the lower 8 bits of rax can be accessed using the register name 'al'. 
 
-![atl text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/shellcodes/images/rax.png)
+![atl text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/shellcodes/images/rax.png)
 
 In addition, you'll often come across the instruction `xor eax, eax` in assembly to reset a register because it doesn't mess with the EFLAGS register. XORing something with itself always gives you 0. Another way to zero out a register is by subtracting it from itself, like `sub eax, eax` for EAX. You can also move the value of an existing register that's already 0 into another register using `mov eax, ecx`. However, keep in mind that these instructions can make your shellcode larger than it needs to be (that's for another article). Let's apply these concepts to our code.
 
@@ -204,7 +204,7 @@ xxd -ps syscall_shell_without_nulls | head
 
 Now we see that the null bytes have been successfully eliminated. Additionally, the size of the shellcode has significantly reduced to just 40 bytes.
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/shellcodes/images/opcodes_wihout_nulls.png)
+![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/shellcodes/images/opcodes_wihout_nulls.png)
 ***
 
 ## Test Shellcode
@@ -226,7 +226,7 @@ sudo chown root:root shellcode
 sudo chmod +s shellcode
 ./shellcode
 ```
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/shellcodes/images/shell_without_nulls.png)
+![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/shellcodes/images/shell_without_nulls.png)
 
 Happy Learning... <br>
 Mahmoud Jadaan

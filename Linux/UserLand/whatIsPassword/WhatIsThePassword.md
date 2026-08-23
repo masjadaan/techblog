@@ -58,7 +58,7 @@ Usage: ./letmein <password>
 ./letmein mysecret
 Incorrect Passowrd. Try again... 
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/whatIsPassword/images/first_run.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/whatIsPassword/images/first_run.png)
 
 ## Give me the password
 When reading the letmein.c source code, you might have noticed the absence of the get_password() function implementation. This omission is intentional; when you run the 'strings' command on the letmein binary, the password won't be revealed. However, a closer look reveals the inclusion of the "secret.h" header, suggesting that get_password() is defined in an external library dynamically linked to the letmein program during runtime.
@@ -72,13 +72,13 @@ gdb -q letmein
 pwndbg> disassemble main
 
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/whatIsPassword/images/main.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/whatIsPassword/images/main.png)
 
 As you can see in the image above, within the main function, there's a call to the authenticate() function located at address 0x400867. Let's trace this call and proceed to disassemble the authenticate() function for a closer examination.
 ```sh
 pwndbg> disassemble authenticate
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/whatIsPassword/images/authenticate.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/whatIsPassword/images/authenticate.png)
 
 When examining the authenticate function code, interestingly, there are two methods to obtain the password. Can you take a guess before we delve into it?
 
@@ -88,14 +88,14 @@ At address 0x4007d8, there's a call to the get_password function, and judging by
 break *0x00000000004007dd
 run AAAAAAAA
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/whatIsPassword/images/1st_breakpoint.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/whatIsPassword/images/1st_breakpoint.png)
 
 The execution should be halted at the breakpoint and when examining RAX register, we can see the password
 ```sh
 pwndbg> x/s $rax
 0x7ffff7c00679: "p4ssw0rd"
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/whatIsPassword/images/rax.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/whatIsPassword/images/rax.png)
 
 The second approach involves recognizing that the strcmp function takes our provided password as its first argument and the stored password as its second argument. We also know form the "Calling Convention" that the first six arguments to a function are passed in registers in the following order:
 |Register| Argument Number|
@@ -112,19 +112,19 @@ This implies that we can set a breakpoint just before the call to strcmp. By add
 break *0x400802 if strcmp((char *)$rdi, "AAAAAAAA") == 0
 continue
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/whatIsPassword/images/2nd_breakpoint.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/whatIsPassword/images/2nd_breakpoint.png)
 
 You can also examine the value in register RSI itself by running the command
 ```sh
 x/s $rsi
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/whatIsPassword/images/rsi.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/whatIsPassword/images/rsi.png)
 
 Now we know the password, so lets run our program and supply the correct password
 ```
 ./letmein p4ssw0rd
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/whatIsPassword/images/final_run.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/whatIsPassword/images/final_run.png)
 
 
 ### Appendix A
@@ -161,7 +161,7 @@ gcc letmein.c -L. -lsecret -Wl,-rpath=. -z execstack -fno-stack-protector -o let
 ```
 - -lsecret: Link against the libsecret.so library.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/whatIsPassword/images/compilation.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/whatIsPassword/images/compilation.png)
 
 
 Happy Learning... <br>

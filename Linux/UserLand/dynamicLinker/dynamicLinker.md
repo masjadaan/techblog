@@ -71,7 +71,7 @@ Simply execute the following xxd command and grab first few lines:
 xxd linker | head
 ```
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/dynamicLinker/images/ELF/xxdLinker.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/dynamicLinker/images/ELF/xxdLinker.png)
 
 Now, let's dissect this output and unravel the meaning behind some of these bytes.
 | Byte | Description|
@@ -88,7 +88,7 @@ However, a simpler method to get this information is by using readelf to read th
 readelf -h linker
 ```
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/dynamicLinker/images/ELF/readelf-h.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/dynamicLinker/images/ELF/readelf-h.png)
 
 
 As we mentioned before, ELF files consist of sections. Now, let's use the readelf tool to display a list of all sections, with a special focus on two sections we'll be referring to later.
@@ -96,7 +96,7 @@ As we mentioned before, ELF files consist of sections. Now, let's use the readel
 readelf -S linker
 ```
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/dynamicLinker/images/ELF/readelf-S_sections.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/dynamicLinker/images/ELF/readelf-S_sections.png)
 
 
 - **".plt"**
@@ -114,7 +114,7 @@ The last command we will use here is to showcase the assembly code. Since readel
 objdump -j .text -d -M intel linker
 ```
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/dynamicLinker/images/ELF/objdump-j.text.png)
+![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Linux/UserLand/dynamicLinker/images/ELF/objdump-j.text.png)
 
 
 

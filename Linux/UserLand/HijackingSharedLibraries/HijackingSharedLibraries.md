@@ -94,7 +94,7 @@ ldd /bin/ps
 
 ```
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/HijackingSharedLibraries/images/ldd_ps.png)
+![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/HijackingSharedLibraries/images/ldd_ps.png)
 
 The `libgpg-error.so.0` library appears to be a good candidate for hijacking. It handles error reporting and is likely to be loaded but not frequently called during normal operation, minimizing the risk of breaking the program.
 
@@ -108,7 +108,7 @@ export LD_LIBRARY_PATH=/home/msbit/Labs/shared_lib/ld_lib_path
 cp libmylibrary.so libgpg-error.so.0
 ```
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/HijackingSharedLibraries/images/cp.png)
+![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/HijackingSharedLibraries/images/cp.png)
 
 ### Executing the Target Program
 
@@ -132,18 +132,18 @@ Reverse Shell via library hijacking...
 
 On the attacker's terminal, you should now see the reverse shell connection. This output indicates that the shell is running with the privileges of the user who executed the `ps` command. 
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/HijackingSharedLibraries/images/userpriv.png)
+![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/HijackingSharedLibraries/images/userpriv.png)
 
 However, if the user runs `ps` command with sudo, no reverse shell will be received at the attacker side, (why is that?).
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/HijackingSharedLibraries/images/no_reverse_shell.png)
+![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/HijackingSharedLibraries/images/no_reverse_shell.png)
 
 
 ## Gaining Root Shell
 
 One of the challenges in exploiting the `LD_LIBRARY_PATH` environment variable is that most modern operating systems do not pass user environment variables when using `sudo`. This behavior is controlled by the `env_reset` setting in the `/etc/sudoers` file, which is enabled by default. When `env_reset` is active, running a command with `sudo` will not include `LD_LIBRARY_PATH` or other user-defined environment variables. This can limit the effectiveness of our library hijacking attempt, as the malicious library won't be loaded when the program is executed with elevated privileges.
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/HijackingSharedLibraries/images/sudoers.png)
+![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/HijackingSharedLibraries/images/sudoers.png)
 
 One trick we can use to bypass this restriction is to create an alias for `sudo` that includes the `LD_LIBRARY_PATH` variable. This method can be applied temporarily in the current terminal session or by adding it to the `.bashrc` file.
 - Temporary Alias:
@@ -168,7 +168,7 @@ sudo ps
 
 On the attacker's terminal, you should see the reverse shell connection. This indicates that the shell is now running with root privileges due to the `sudo` command
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/HijackingSharedLibraries/images/rootShell.png)
+![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/HijackingSharedLibraries/images/rootShell.png)
 
 
 Happy Learning... <br>
