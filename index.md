@@ -11,6 +11,8 @@ Articles on Linux internals, cryptography attacks, network protocols, and hardwa
 
 ## Linux
 
+### UserLand
+
 | Article | Topics |
 |---------|--------|
 | [Hijacking Shared Libraries](Linux/UserLand/HijackingSharedLibraries/HijackingSharedLibraries) | LD_PRELOAD, shared objects, privilege escalation |
@@ -18,6 +20,11 @@ Articles on Linux internals, cryptography attacks, network protocols, and hardwa
 | [ShellCodes](Linux/UserLand/shellcodes/shellcodes) | Assembly, syscalls, null-byte removal |
 | [What is the password?](Linux/UserLand/whatIsPassword/WhatIsThePassword) | /etc/passwd, /etc/shadow, hashing |
 | [Backdoor Via Vim](Linux/UserLand/vimHacks/BackdoorViaVim/Backdoor_via_vim) | .vimrc, persistence, autocommands |
+
+### KernelLand
+
+| Article | Topics |
+|---------|--------|
 | [Walking the Page Table](Linux/KernelLand/WalkingPageTable/WalkingPageTable) | x86_64 paging, virtual memory, kernel, GDB, QEMU |
 
 ---
