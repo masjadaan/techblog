@@ -26,6 +26,7 @@ Articles on Linux internals, cryptography attacks, network protocols, and hardwa
 | Article | Topics |
 |---------|--------|
 | [Walking the Page Table](Linux/KernelLand/WalkingPageTable/WalkingPageTable) | x86_64 paging, virtual memory, kernel, GDB, QEMU |
+| [Abusing modprobe_path](Linux/KernelLand/ModprobePath/modprobe) | modprobe_path, kernel module, privilege escalation, binfmt |
 
 ---
 

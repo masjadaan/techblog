@@ -23,3 +23,4 @@ Articles covering Linux internals, binary exploitation, and persistence techniqu
 | Article | Topics |
 |---------|--------|
 | [Walking the Page Table](KernelLand/WalkingPageTable/WalkingPageTable) | x86_64 paging, virtual memory, kernel, GDB, QEMU |
+| [Abusing modprobe_path](KernelLand/ModprobePath/modprobe) | modprobe_path, kernel module, privilege escalation, binfmt |
