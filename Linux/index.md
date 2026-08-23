@@ -8,6 +8,8 @@ permalink: /Linux/
 
 Articles covering Linux internals, binary exploitation, and persistence techniques.
 
+## UserLand
+
 | Article | Topics |
 |---------|--------|
 | [Hijacking Shared Libraries](UserLand/HijackingSharedLibraries/HijackingSharedLibraries) | LD_PRELOAD, shared objects, privilege escalation |
@@ -15,4 +17,9 @@ Articles covering Linux internals, binary exploitation, and persistence techniqu
 | [ShellCodes](UserLand/shellcodes/shellcodes) | Assembly, syscalls, null-byte removal |
 | [What is the password?](UserLand/whatIsPassword/WhatIsThePassword) | /etc/passwd, /etc/shadow, hashing |
 | [Backdoor Via Vim](UserLand/vimHacks/BackdoorViaVim/Backdoor_via_vim) | .vimrc, persistence, autocommands |
+
+## KernelLand
+
+| Article | Topics |
+|---------|--------|
 | [Walking the Page Table](KernelLand/WalkingPageTable/WalkingPageTable) | x86_64 paging, virtual memory, kernel, GDB, QEMU |
