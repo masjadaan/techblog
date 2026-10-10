@@ -61,7 +61,7 @@ However, there is a little twist in the process for the first block. For the fir
 (IV) ^ (Plaintext data block 1)
 ```
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Cryptography/CBCBitFlipAttack/images/encryptoin.png)
+![alt text](images/encryptoin.png)
 
 #### Decryption
 Let's talk about decryption now. The ciphertext of the previous block is XORed with the output of the decrypting algorithm of the next block. In simpler terms:
@@ -73,7 +73,7 @@ But again, there's a special case for the first block. The Initialization Vector
 (IV) ^ (Decrypting Algorithm output block 1)
 ```
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Cryptography/CBCBitFlipAttack/images/decryption.png)
+![alt text](images/decryption.png)
 
 
 ## CBC Bit-Flipping Attack
@@ -88,7 +88,7 @@ As you launch the app, you'll see the original values: Original Text, Original I
 ./app.py
 ```
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Cryptography/CBCBitFlipAttack/images/userid9.png)
+![alt text](images/userid9.png)
 
 Now, here's where it gets interesting. The "Original Text" contains a userid encrypted by the app using AES-CBC. Imagine this userid plays a crucial role in the application, perhaps for user ID checks before granting access or escalating privileges. The attack strategy is to modify the encrypted text so that the userid is changed to 0, assuming it's an admin userid.
 
@@ -124,7 +124,7 @@ Since I don't know which byte in the Initialization Vector needs changing, I ran
 data = bit_flipping(ciphertext=data, position=7, xor_value=7)
 ```
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Cryptography/CBCBitFlipAttack/images/usbrid.png)
+![alt text](images/usbrid.png)
 
 After refreshing the web page, we observe the result: the word "userid" transforms into "usbrid" (you'll also notice the modification in the IV).
 
@@ -134,14 +134,14 @@ Clearly, I've picked the wrong position, so let's keep increasing it until we ov
 data = bit_flipping(ciphertext=data, position=13, xor_value=7)
 ```
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Cryptography/CBCBitFlipAttack/images/userid%3E.png)
+![alt text](images/userid%3E.png)
 
 We've determined the position changes, and now we need to fine-tune the xor_value parameter in the bit_flipping() function until we get zero. Actually, this occurs when the xor_value is equal to 9, as depicted in the image below. Once the web application decrypts the ciphertext, the userid value magically transforms into 0.
 ```python
 data = bit_flipping(ciphertext=data, position=13, xor_value=9)
 ```
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Cryptography/CBCBitFlipAttack/images/userid0.png)
+![alt text](images/userid0.png)
 
 ## Let's do some Math
 Now, let's break down the magic. Remember how we mentioned earlier that during decryption, the output of the Decrypt Algorithm is XORed with the IV? Well, the first time we messed with the user id, we manipulated the IV at position 13 with a value of 7. At position 13, we find the value 4, and its ASCII value is 0x34. We XORed it with 0x7 and got 0x33, which, in ASCII, is the number 3. That's why we got 3 in the modified IV:
@@ -182,8 +182,8 @@ To begin, clone the GitHub repository to obtain the code. Next, navigate to the 
 To follow the steps outlined in this article, open app.py in any text editor, preferably PyCharm. Locate the bit_flipping function. Each time you modify the values of position or xor_value, simply refresh the web application page to observe the changes.
 
 ```sh
-git clone https://github.com/masjadaan/TechSecurityArticles.git
-cd TechSecurityArticles/Cryptography/CBCBitFlipAttack/application
+git clone https://github.com/masjadaan/techblog.git
+cd techblog/Cryptography/CBCBitFlipAttack/application
 ./app.py 
 
 # in a browser navigate to

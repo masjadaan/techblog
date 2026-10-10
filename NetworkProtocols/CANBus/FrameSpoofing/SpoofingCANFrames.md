@@ -24,7 +24,7 @@ Accepted CAN frames are stored in a receive buffer, often implemented as a First
 
 In summary, when a CAN frame is received, it results in updates to the global variables within the application.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/HandlingCANFrames.png)
+![alt text](images/HandlingCANFrames.png)
 
 
 ## Spoofing Attack
@@ -36,14 +36,14 @@ To observe this attack in action, we need some hardware. In my personal CAN lab,
 
 For our setup, we will use three CANPico boards to replicate a scenario where a sender and receiver communicate on the CAN bus while an attacker is also connected to the same bus. Furthermore, we will connect a Logic Analyzer to the Attacker board as depicted in the image below.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/LabSetup.png)
+![alt text](images/LabSetup.png)
 
 ### 1. CANPico Board
 The CANPico board is designed to be placed on top of the Raspberry Pi Pico. It features an enhanced CAN controller (MCP2517FD) and CAN transceiver. The board comes with an open-source SDK for MicroPython that incorporates the CANHack toolkit API. The Canis Lab documentation mentions "The CANHack software is provided as generic C that ‘bit bangs’ the TX pin using spin loops. It has been ported to the RP2040 microcontroller in the Raspberry Pi Pico and been wrapped with a Python API in custom MicroPython firmware for the Raspberry Pi Pico. The generic C and the MicroPython API code are available in the Canis Labs [repository](https://github.com/kentindell/canhack)"
 
 This CANHack toolkit API enables the execution of low-level attacks on the CAN protocol, which we will use in our domestation later on. For more details, please visit the official website of [Canis Labs](https://canislabs.com/). The following is the pin diagram and the pins for connecting a logic analyzer.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/PinDiagram.png)
+![alt text](images/PinDiagram.png)
 
 ### 2. Thonny
 Thonny is a free and open-source Python IDE. It will be our tool for writing Python code to program the sender, receiver, and attacker nodes. It can be easily installed by running the following command:
@@ -65,11 +65,11 @@ From the output of ls command, we see that our computer has recognized the Attac
 thonny
 # Tools -> Option -> Interpreter -> MicroPython (Raspberry Pi Pico) and Port -> /dev/ttyACM0
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/Thonny_ttyACM.png)
+![alt text](images/Thonny_ttyACM.png)
 
 If everything proceeds as expected, you should establish a connection and view the MicroPython version.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/Thonny_MicroPython.png)
+![alt text](images/Thonny_MicroPython.png)
 
 Let's perform the same steps for the Sender board, connect it first to your computer
 ```
@@ -122,40 +122,40 @@ First of all, let's start by using two wire jumpers: one to connect CH1 on the L
 
 Once the physical connections are in place, the next step is to configure PulseView to align with our specific environment. After launching PulseView, ensure that the Saleae Logic option is selected.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/Saleae.png)
+![alt text](images/Saleae.png)
 
 
 Since our focus is solely on channels D0 and D1, thus we can disable all channels and select only D0 and D1, then close the windows.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/DoD1.png)
+![alt text](images/DoD1.png)
 
 
 On the left panel, click on "D0" and rename it to CAN Tx. In addition, click on D1 and rename it to CAN Rx then set the trigger to a `Falling Edge` and close the window.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/CANTx.png)
+![alt text](images/CANTx.png)
 <br>
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/CANRx.png)
+![alt text](images/CANRx.png)
 
 Navigate to the decoder button, search for the CAN protocol decode, and add it.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/decoder.png)
+![alt text](images/decoder.png)
 
 
 You will see a green CAN symbol on the left panel; click on it and apply the following configuration: set CAN RX to CAN Rx, set the bitrate to 500,000, and configure the Sample point to 75% as depected in image below.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/CANDecoder.png)
+![alt text](images/CANDecoder.png)
 
 To ensure proper framing, set the pre-trigger to 20% to accommodate idle time before the start of a frame.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/preTrigger.png)
+![alt text](images/preTrigger.png)
 
 One last thing is to set is the sampling rate, which is the number of samples taken from an analog signal within a specific time interval measured by Hertz (Hz). Let's choose 16MHz with a total of 50k samples, providing a 3-second window for a complete CAN frame.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/sampleRate.png)
+![alt text](images/sampleRate.png)
 
 Now let's put everthing together, and our final setup looks like this:
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/FinalSetup.png)
+![alt text](images/FinalSetup.png)
 
 ## Executing Frame Spoofing Attack
 As we discussed earlier, we're going to set up three CANPico nodes: one for sending, one for receiving, and one for attacking. Now, let's dive into the sender node. First things first, we initialize the CAN controller. After that, we create a CAN frame with an ID of 0x123 and data set as "AA". To send this frame on the bus, we use a simple for loop, sending it out with a one-second delay between each frame. Take a look at the code snippet below:
@@ -213,7 +213,7 @@ To initiate the attack, follow these steps in sequence:
 
 Upon completion of these steps, you should get a result similar to the image depicted below.
 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/NetworkProtocols/CANBus/FrameSpoofing/images/Attack.png)
+![alt text](images/Attack.png)
 
 Let's examine the current scenario: the sender intends to transmit a CAN message with a CAN ID of 0x123 and data "AA." However, an attacker node, connected to the same bus, is consistently monitoring the CAN bus for this specific CAN ID. Upon detecting the intended message, the attacker node immediately sends a CAN message with the same ID but different data, namely "BB". By looking at the receiver node, we observe that both messages has arrived, with timestamps that are very close to each other.
 
