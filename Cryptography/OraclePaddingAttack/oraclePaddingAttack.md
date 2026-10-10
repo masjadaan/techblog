@@ -31,10 +31,10 @@ As previously mentioned, block ciphers employ a fixed-size block, necessitating 
 Public Key Cryptography Standards #7 (PKCS#7) stands out as a widely recognized cryptographic standard defining a padding scheme used to pad the last block of plaintext before encryption in block cipher modes requiring a fixed block size.
 
 To understand the workings of this padding, consider an example with a block size of 8 bytes and the words "Exploit, Attack, Cyber, Hack" requiring padding. The image below illustrates how padding is applied to these words. If a word's length is less than the block size, padding is added until the word reaches the exact block size length, and the value of the padding is the number of bytes added. For instance, "Exploit" needs only one byte, and the value of the padded byte is 0x01. However, "Hack" needs 4 bytes of padding, with the value of the padding byte being 0x04.
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Cryptography/OraclePaddingAttack/images/padding1block.png)
+![alt text](images/padding1block.png)
 
 In another scenario, when a word's length matches the block size exactly, a new block is added, and the value of the padded bytes is set to 0x08, as demonstrated when encrypting the word "Standard."
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Cryptography/OraclePaddingAttack/images/padding2blocks.png)
+![alt text](images/padding2blocks.png)
 
 While the concept of padding may seem straightforward, let's delve into another essential concept.
 
@@ -60,7 +60,7 @@ However, this is not the case for the initial block because it doesn't have a pr
 ```
 (IV) ^ (Plaintext data block 1)
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Cryptography/OraclePaddingAttack/images/cbc_encryption.png)
+![alt text](images/cbc_encryption.png)
 
 #### Decryption
 Now, regarding decryption, the ciphertext of the previous block is XORed with the output of the decrypting algorithm of the next block (First decryption, then XOR). In simpler terms:
@@ -72,7 +72,7 @@ But again, there's a special case for the first block, and here the Initializati
 ```
 (IV) ^ (Decrypting Algorithm output block 1)
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Cryptography/OraclePaddingAttack/images/cbc-decryption.png)
+![alt text](images/cbc-decryption.png)
 
 
 Now that we've discussed the essential concepts, let's delve into the attack itself.
@@ -92,7 +92,7 @@ As we lack the secret key, decrypting this cookie is currently beyond our reach.
 **Note**: *In many implementations, the IV is transmitted with the message. However, in our scenario, the initial 16 bytes in "encrypted_data" represent the IV values, while the remainder constitutes the encrypted message (cookie).*
 
 For simplicity, this attack focuses on a single block. Let's explore the decryption process for one block. 
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Cryptography/OraclePaddingAttack/images/1blockDecryption.png)
+![alt text](images/1blockDecryption.png)
 
 The ciphertext is initially decrypted by AES using the hidden secret key on the server, generating an intermediate value, referred to as the keystream. Subsequently, this keystream is XORed with the IV to produce the plaintext. For an attacker, the keystream is unknown, or is it?
 
@@ -115,7 +115,7 @@ modified_ct = modified_iv + cookies
 ```
 
 Upon sending the modified cookie to the server for decryption, an error is returned, signaling a padding error. This failure indicates that the server checks the last byte of the plaintext and identifies it as an invalid padding byte.
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Cryptography/OraclePaddingAttack/images/allzerosIV.png)
+![alt text](images/allzerosIV.png)
 
 As our first attempt has failed, let's refine our approach. Focusing on one byte at a time, we begin with the last byte of the IV (the 16th byte of IV). Incrementing it by one, we resend the modified cookie for decryption. Once again, an error is received, indicating invalid padding. We repeat this process until the server no longer sends a padding error. When this occurs, it signifies correct padding, revealing that the last byte of the plaintext has the byte value 0x01, in line with the earlier-discussed padding scheme.
 
@@ -124,7 +124,7 @@ Now armed with the knowledge of the IV byte value that avoids a padding error an
 Keystream[15] = IV[15] ^ 0x01
 Keystream[15] = 0x35 ^ 0x01 = 0x34
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Cryptography/OraclePaddingAttack/images/lastbyteIV.png)
+![alt text](images/lastbyteIV.png)
 
 Next, we repeat the same process for the second to last byte of the IV (the 15th byte of IV), and the challenge is the same we need to guess IV values and send them to the server until we no longer encounter a padding error. However, the difference now is that we require the last two bytes of the plaintext to be 0x02 and 0x02. For the last byte, we can solve it with a simple XOR operation.
 ```
@@ -137,7 +137,7 @@ However, for the second to last byte, we need to try all possible values. Starti
 Keystream[14] = IV[14] ^ 0x02
 Keystream[14] = 0x35 ^ 0x02 = 0x37
 ```
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Cryptography/OraclePaddingAttack/images/last2bytesIV.png)
+![alt text](images/last2bytesIV.png)
 
 This process is repeated until all the keystream bytes are recovered. Once accomplished, Phase 1 concludes, and we proceed to Phase 2.
 
@@ -168,13 +168,13 @@ Plaintext[12] = 0x33 ^ 0x57 = 0x64 -> convert to ASCII d
 
 
 This process continues until we recover the entire plaintext.
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Cryptography/OraclePaddingAttack/images/plaintext.png)
+![alt text](images/plaintext.png)
 
 That's the essence of how the Oracle Padding Attack works. Cryptography is fascinating, isn't it?
-![alt text](https://raw.githubusercontent.com/masjadaan/TechSecurityArticles/main/Cryptography/OraclePaddingAttack/images/cover.png)
+![alt text](images/cover.png)
 
 ## Appendix A
-If you wish to observe the decryption of the ciphertext, both the server and client applications are available on my [GitHub repository](https://github.com/masjadaan/TechSecurityArticles/tree/main/Cryptography/OraclePaddingAttack).
+If you wish to observe the decryption of the ciphertext, both the server and client applications are available on my [GitHub repository](https://github.com/masjadaan/techblog/tree/main/Cryptography/OraclePaddingAttack).
 
 The server application establishes a Flask web application with an endpoint "/process" designed to handle POST requests. The endpoint anticipates data in the request body and examines the value of the 'Is-Encrypted' header. If the header is set to 'true,' the received data is presumed to be ciphertext and is decrypted using the AesCbc class from cbc.py. Conversely, if the header is set to 'false,' the received data is assumed to be plaintext and is encrypted using the same class. The implementation for both encryption and decryption is detailed in the cbc.py file.
 

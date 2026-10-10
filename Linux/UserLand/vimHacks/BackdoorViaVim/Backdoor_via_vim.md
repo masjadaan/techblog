@@ -23,11 +23,11 @@ To get a feel for that, let's experiment. To execute a command within the VIM en
 :!echo $USER
 ```
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/vimHacks/BackdoorViaVim/images/UID.png)
+![alt text](images/UID.png)
 
 You see, once you hit enter, the user ID is printed on the screen. This is because VIM has access to the shell environment's variables.
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/vimHacks/BackdoorViaVim/images/1000.png)
+![alt text](images/1000.png)
 
 Great, let's get back to the `.vimrc` file. We can inject any commands into the `.vimrc` file, and once the current user starts Vim, these commands are executed in the background. One particularly interesting command is the source command, used to execute commands from a script file in the current shell session.
 
@@ -56,7 +56,7 @@ Okay, let's give it a shot. Start a netcat listener on the attacker machine on p
 nc -lnvp 7777
 ```
 
-![alt text](https://github.com/masjadaan/TechSecurityArticles/blob/main/Linux/UserLand/vimHacks/BackdoorViaVim/images/reverseShell.png)
+![alt text](images/reverseShell.png)
 
 You should know that the reverse shell obtained doesn't necessarily grant access beyond that of the current user. However, if the victim runs VIM with sudo, the attacker might get a root shell. However, this is only half the story; it depends on the Linux distribution. For example, in systems like Ubuntu and Red Hat, VIM uses the current user's `.vimrc` configuration file even within a sudo context. Therefore, if the user invokes VIM via sudo, our sourced script will execute as root. On the other hand, in distributions like Debian, VIM defaults to the root user's configuration when invoked with sudo, without using the current user's settings.
 
