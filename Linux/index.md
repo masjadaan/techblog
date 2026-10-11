@@ -24,3 +24,10 @@ Articles covering Linux internals, binary exploitation, and persistence techniqu
 |---------|--------|
 | [Walking the Page Table](KernelLand/WalkingPageTable/WalkingPageTable) | x86_64 paging, virtual memory, kernel, GDB, QEMU |
 | [Abusing modprobe_path](KernelLand/ModprobePath/modprobe) | modprobe_path, kernel module, privilege escalation, binfmt |
+
+## Sandboxing
+
+| Article | Topics |
+|---------|--------|
+| [chroot Part 1: How It Works and Setting Up a Jail](Sandboxing/01_chroot/chroot_p1) | chroot syscall, jail setup, BusyBox |
+| [chroot Part 2: Escaping and Limitations](Sandboxing/01_chroot/chroot_p2) | chroot escapes, namespaces, cgroups, seccomp |
