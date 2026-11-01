@@ -12,7 +12,6 @@ Part 1 covered how `chroot()` works and how to set up a basic jail, first with `
    - [No PID Isolation](#no-pid-isolation)
    - [No Network Isolation](#no-network-isolation)
    - [No IPC Isolation](#no-ipc-isolation)
-   - [No Syscall Filtering](#no-syscall-filtering)
 3. [Why chroot Fell Out of Favor & Modern Replacements](#3-why-chroot-fell-out-of-favor--modern-replacements)
 4. [Conclusion](#4-conclusion)
 
