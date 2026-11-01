@@ -30,7 +30,7 @@ Let's start with one of the simplest mistakes. If a program calls the raw `chroo
 
 Because **relative paths are resolved from the current working directory rather than the process's root**, the process may still be able to access files outside the jail.
 
-The [`escape.c`](PoC/escape.c) minimal program demonstrates this. It does only two things:
+The [`escape.c`](https://github.com/masjadaan/techblog/blob/main/Linux/Sandboxing/01_chroot/PoC/escape.c) minimal program demonstrates this. It does only two things:
 
 1. Calls `chroot("/tmp/jail")` and, deliberately, does **not** follow it with `chdir("/")`.
 2. Opens the relative path `../../../etc/passwd`, and tries to read the first line.
@@ -65,7 +65,7 @@ int openat(int dirfd, const char *pathname, int flags);
 
 So, let's consider what happens if a process opens a directory outside the jail before calling `chroot()`. It can later pass that `dirfd` to `openat()` and resolve paths relative to the outside directory.
 
-The [`escape_fd.c`](PoC/escape_fd.c) minimal program demonstrates this. It does only three things:
+The [`escape_fd.c`](https://github.com/masjadaan/techblog/blob/main/Linux/Sandboxing/01_chroot/PoC/escape_fd.c) minimal program demonstrates this. It does only three things:
 
 1. Opens `/` with `open()` **before** entering the jail, keeping the resulting file descriptor (`outside_fd`) that points to the real host root.
 2. Calls `chroot("/tmp/jail")` followed by `chdir("/")`, so, unlike the previous example, the jail is entered correctly.
@@ -95,7 +95,7 @@ Now let's look at another escape technique: re-chrooting. **The kernel does not 
 
 When combined with the fact that `chroot()` does not change the current working directory, this can allow a process to escape completely.
 
-Let's walk through the technique, assuming the process is already inside a jail and has correctly called both `chroot()` and `chdir("/")`. The [`rechroot.c`](PoC/rechroot.c) program implements it, and it is meant to be run *inside* the jail. The program does the following:
+Let's walk through the technique, assuming the process is already inside a jail and has correctly called both `chroot()` and `chdir("/")`. The [`rechroot.c`](https://github.com/masjadaan/techblog/blob/main/Linux/Sandboxing/01_chroot/PoC/rechroot.c) program implements it, and it is meant to be run *inside* the jail. The program does the following:
 
 1. It creates a subdirectory inside the current jail, for example `foo`.
 
