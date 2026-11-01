@@ -320,7 +320,7 @@ We created a small kernel module with a deliberately unchecked write. The module
 
 ### The Vulnerable Module
 
-Now let's look at the component that gives us the write primitive: `vulnwrite.c`. The module creates `/dev/vulnwrite` and exposes a single `ioctl` operation. That operation receives a structure containing two fields:
+Now let's look at the component that gives us the write primitive: [`vulnwrite.c`](https://github.com/masjadaan/techblog/blob/main/Linux/KernelLand/ModprobePath/module/vulnwrite.c). The module creates `/dev/vulnwrite` and exposes a single `ioctl` operation. That operation receives a structure containing two fields:
 
 - The kernel address `addr` to write to
 - The data to write there
@@ -374,7 +374,7 @@ ffffffff8284f5e0 D modprobe_path
 
 ### Overwriting `modprobe_path`
 
-The trigger side is handled by `poc.c`, a small program whose main job is to overwrite `modprobe_path` with the path to our script, `/tmp/evil.sh`.
+The trigger side is handled by [`poc.c`](https://github.com/masjadaan/techblog/blob/main/Linux/KernelLand/ModprobePath/module/poc.c), a small program whose main job is to overwrite `modprobe_path` with the path to our script, `/tmp/evil.sh`.
 
 ```c
 struct vuln_write_req {
