@@ -22,6 +22,8 @@ Now that we've seen how `chroot` works, let's look at why it should not be consi
 
 The key point to remember is that `chroot()` only changes the meaning of `/`. It does not change everything else about the process. The escape techniques we're about to examine take advantage of exactly those things that `chroot()` leaves untouched.
 
+---
+
 ### 1.1 chroot Without chdir
 
 Let's start with one of the simplest mistakes. If a program calls the raw `chroot()` syscall but never follows it with `chdir("/")`, the process's current working directory remains wherever it was before the call. That location can still be outside the new root.
@@ -31,7 +33,7 @@ Because **relative paths are resolved from the current working directory rather 
 The [`escape.c`](PoC/escape.c) minimal program demonstrates this. It does only two things:
 
 1. Calls `chroot("/tmp/jail")` and, deliberately, does **not** follow it with `chdir("/")`.
-2. Opens the relative path `../../../etc/passwd`, and tries to read the first line
+2. Opens the relative path `../../../etc/passwd`, and tries to read the first line.
 
 Note that `chroot()` requires root privileges, so the program must be run with `sudo`. Let's compile and run it:
 
@@ -41,7 +43,7 @@ student@kernel-sec:/tmp$ sudo ./escape
 Escaped the jail, read: root:x:0:0:root:/root:/bin/bash
 ```
 
-Looking at the result, we can see that the program successfully read the real `/etc/passwd` file.
+Looking at the results, we can see that the program successfully accessed the actual `/etc/passwd` file, even though it is located outside the jail environment.
 
 Why did that happen? **Because `chdir("/")` was never called**. The current working directory was still the host directory where the program was launched, so `../../../etc/passwd` could walk back through that outside path and reach the real `/etc/passwd`.
 
@@ -49,9 +51,11 @@ The `/usr/sbin/chroot` command-line utility avoids this particular problem by ca
 
 A single missing `chdir("/")` can therefore leave a supposed `chroot` jail with no meaningful filesystem isolation.
 
+---
+
 ### 1.2 Previously Open File Descriptors
 
-Let's move on to another important weakness. As we saw earlier, `chroot()` does not close file descriptors that were opened before the syscall. If a file descriptor already points to a directory outside the jail, it continues to point there even after the process is chrooted.
+Let's move on to another important weakness. `chroot()` does not close file descriptors that were opened before the syscall. If a file descriptor already points to a directory outside the jail, it continues to point there even after the process is chrooted.
 
 This becomes particularly interesting when we look at the `*at` family of syscalls, such as `openat()` and `execveat()`. These syscalls can resolve relative paths using a directory file descriptor, known as a `dirfd`, rather than relying on the process's root or current working directory:
 
@@ -79,9 +83,11 @@ bin:x:2:2:bin:/bin:/usr/sbin/nologin
 
 Looking at this output, we can see that the process reached the real `/etc/passwd` even though `chdir("/")` was correctly called.
 
-The reason is the `outside_fd` file descriptor. **It was opened before `chroot()` and still refers to the unrestricted host root**. When that descriptor is passed to `openat()`, the path `etc/passwd` is resolved relative to that outside directory.
+The reason is that the `outside_fd` file descriptor **was opened before `chroot()` and still refers to the unrestricted host root**. When that descriptor is passed to `openat()`, the path `etc/passwd` is resolved relative to that outside directory.
 
 The same principle applies to many other `*at` syscalls, including `fstatat()`, `unlinkat()`, and `renameat()`. Once an outside `dirfd` has been captured, those syscalls can operate relative to it.
+
+---
 
 ### 1.3 Re-chrooting
 
@@ -93,7 +99,7 @@ Let's walk through the technique, assuming the process is already inside a jail 
 
 1. It creates a subdirectory inside the current jail, for example `foo`.
 
-2. It then calla `chroot("foo")`. The process's root is now `/foo`, but its current working directory still points to the *old* root, which is now outside the new, narrower root.
+2. It then calls `chroot("foo")`. The process's root is now `/foo`, but its current working directory still points to the *old* root, which is now outside the new, narrower root.
 
    ```text
    /
@@ -109,7 +115,7 @@ Let's walk through the technique, assuming the process is already inside a jail 
 
 4. Finally, it calls `chroot(".")`. The process's root is now set to the location where the current working directory points, which is the real host root. `rechroot.c` then calls `execl("/bin/sh", ...)` to hand control to a shell running with that root.
 
-Let's compile and run it:
+Let's compile our demonstration program, copy it into `/tmp/jail`, and create the jail environment there. Once we're inside the jail, we'll execute the program and observe its behavior:
 
 ```sh
 gcc -o rechroot rechroot.c
@@ -161,9 +167,13 @@ sudo chroot /tmp/jail /busybox sh
 / # kill 1664
 ```
 
-Looking at the output, we can see that the `sleep` process, even though it was started outside the jail, is visible from inside it.
+Looking at the output, we can see that the `sleep` process is visible from inside the jail, even though it was started outside the jail environment. More importantly, we can also terminate that process from inside the jail.
 
-We can also verify the result by exiting back to the host:
+```sh
+kill 1664
+```
+
+Let's verify the result by exiting back to the host:
 
 ```sh
 / # exit
@@ -201,7 +211,7 @@ Looking at both outputs, we can see that the interfaces and IP addresses are ide
 
 Now let's check inter-process communication. Shared memory, message queues, and semaphores are not isolated by `chroot`. POSIX shared memory objects live in `/dev/shm`, which is simply a `tmpfs` mount.
 
-We can demonstrate this by bind-mounting `/dev/shm` into the jail. First, on the host, run:
+We can demonstrate this behavior by bind-mounting the host's `/dev/shm` directory into the jail. On the host, we'll then create a file named `msg` containing the text `shared`.
 
 ```sh
 sudo mkdir -p /tmp/jail/dev/shm
@@ -219,17 +229,6 @@ shared
 
 As we can see from the output, the jailed process is able to read data that was created outside the jail.
 
-### No Syscall Filtering
-
-Finally, let's look at system calls. `chroot` does not restrict which syscalls a process can make. Anything outside filesystem path resolution remains available, subject to the process's existing privileges.
-
-That includes operations involving mechanisms such as `ptrace()` and, where sufficient privileges exist, loading kernel modules.
-
-The re-chroot escape we examined earlier is itself a good demonstration. `chroot()` is just another syscall, and being inside a chroot jail does not automatically prevent a process from calling it again.
-
-None of this is necessarily a flaw in the original design, because `chroot` was never intended to isolate all of these resources.
-
-However, as we've seen throughout this section, being "chrooted" is not the same thing as being fully "sandboxed." A process confined only by `chroot` can still see, signal, communicate with, and potentially interfere with other processes and resources on the machine.
 
 ## 3. Why chroot Fell Out of Favor & Modern Replacements
 
@@ -247,6 +246,6 @@ When we combine these technologies, we get the foundation of modern container te
 
 ## 4. Conclusion
 
-Let's bring everything together. `chroot` introduced an important early approach to sandboxing, but its scope has always been limited to filesystem path resolution. It does not isolate processes, networking, IPC, or system calls, and certain configurations can also allow the process to escape the filesystem boundary entirely.
+Putting everything together. `chroot` introduced an important early approach to sandboxing, but its scope has always been limited to filesystem path resolution. It does not isolate processes, networking, IPC, or system calls, and certain configurations can also allow the process to escape the filesystem boundary entirely.
 
 This is why a `chroot` environment should not be treated as a complete security boundary, especially when dealing with untrusted code. Modern Linux isolation mechanisms, particularly namespaces, cgroups, and seccomp, exist to cover the areas that `chroot` was never designed to handle.
